@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>火星漢堡研究所 | Mars Burger Lab</title>
+    <!-- 載入原本的 Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    
+    <!-- 火星研究所專屬未來感樣式 -->
+    <style>
+        :root {
+            --mars-orange: #ff5722;
+            --mars-glow: #ff7043;
+            --lab-green: #00ff66;
+            --space-dark: #0b0e14;
+            --space-card: #161b26;
+            --cyber-blue: #00e5ff;
+        }
+
+        body {
+            background-color: var(--space-dark);
+            color: #e0e6ed;
+            font-family: 'Segoe UI', Microsoft JhengHei, sans-serif;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
+            background-size: 550px 550px, 350px 350px;
+            background-position: 0 0, 40px 60px;
+        }
+
+        /* 導覽列美化 */
+        .navbar {
+            background-color: rgba(22, 27, 38, 0.9) !important;
+            border-bottom: 2px solid var(--mars-orange);
+            box-shadow: 0 0 15px rgba(255, 87, 34, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        .navbar-brand {
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--mars-orange) !important;
+            text-shadow: 0 0 10px rgba(255, 87, 34, 0.6);
+        }
+
+        /* 主標題：火星控制艙風格 */
+        .title-panel {
+            background: linear-gradient(135deg, #2c0e07 0%, #161b26 100%) !important;
+            border: 2px solid var(--mars-orange);
+            color: #fff !important;
+            text-shadow: 0 0 12px var(--mars-orange);
+            box-shadow: inset 0 0 20px rgba(255, 87, 34, 0.4), 0 0 20px rgba(255, 87, 34, 0.2);
+            letter-spacing: 4px;
+            font-weight: bold;
+        }
+
+        /* 區塊卡片面板 */
+        .lab-card {
+            background-color: var(--space-card);
+            border: 1px solid rgba(255, 87, 34, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            margin-bottom: 30px;
+        }
+
+        .h3 {
+            color: var(--cyber-blue);
+            font-weight: 700;
+            border-left: 4px solid var(--cyber-blue);
+            padding-left: 10px;
+            margin-top: 15px;
+            letter-spacing: 1px;
+        }
+
+        /* 表單輸入框與特殊外觀 */
+        .form-control, .form-select, .form-check-input {
+            background-color: #0b0e14 !important;
+            border: 1px solid #3a4454 !important;
+            color: #fff !important;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--cyber-blue) !important;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.4) !important;
+        }
+
+        /* 點餐核取方塊與文字特別設計 */
+        .meal-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+        .meal-item:hover {
+            background: rgba(0, 229, 255, 0.05);
+            border-color: var(--cyber-blue);
+        }
+        .form-check-input:checked {
+            background-color: var(--mars-orange) !important;
+            border-color: var(--mars-orange) !important;
+            box-shadow: 0 0 8px var(--mars-glow) !important;
+        }
+
+        /* 驗證提示文字外框 */
+        .is-valid { border-color: var(--lab-green) !important; }
+        .is-invalid { border-color: #ff3860 !important; }
+        .valid-feedback { color: var(--lab-green); }
+        .invalid-feedback { color: #ff3860; }
+
+        /* 右側儀表板：訂單實驗報告 */
+        .report-panel {
+            background: rgba(0, 255, 102, 0.03) !important;
+            border: 1px solid rgba(0, 255, 102, 0.3) !important;
+            box-shadow: inset 0 0 15px rgba(0, 255, 102, 0.1);
+            color: #e0e6ed !important;
+        }
+        .report-panel .h3 {
+            color: var(--lab-green) !important;
+            border-left-color: var(--lab-green) !important;
+        }
+        .report-data {
+            color: var(--lab-green) !important;
+            text-shadow: 0 0 5px rgba(0, 255, 102, 0.5);
+        }
+
+        /* 科幻按鈕 */
+        .btn-mars {
+            background: linear-gradient(45deg, #e64a19, var(--mars-orange));
+            color: white;
+            border: none;
+            box-shadow: 0 0 15px rgba(255, 87, 34, 0.4);
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .btn-mars:hover:not(:disabled) {
+            background: linear-gradient(45deg, var(--mars-orange), #ff7043);
+            box-shadow: 0 0 25px var(--mars-glow);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .btn-mars:disabled {
+            background: #2c3545;
+            color: #63758a;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+        
+        .list-group-item {
+            background-color: transparent !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+            color: #cbd5e1 !important;
+        }
+        hr {
+            border-color: rgba(255, 87, 34, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 導覽列 -->
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a href="ordermeal_index.html" class="navbar-brand">🧪 {{title}}</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="ordermeal_index.html">研究首頁</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">實驗室控制台</a>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a href="marsburger_orderMeal.html" class="dropdown-item">配方調配 (點餐)</a></li>
+                                <li><a href="marsburger_orderList.html" class="dropdown-item">觀測紀錄 (訂單列表)</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <form class="d-flex" role="search" @submit.prevent>
+                        <input type="search" class="form-control me-2" placeholder="搜尋生物特徵/訂單..." aria-label="Search">
+                        <button class="btn btn-outline-warning text-nowrap" type="submit">掃描</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container pb-5">
+            <div class="row justify-content-center">
+                <!-- 網頁頂部大標題 -->
+                <div class="display-4 text-center title-panel my-4 py-3 rounded-3">🛸 {{title}} 🛸</div>
+                
+                <div class="col-lg-10">
+                    <!-- 點餐總開關控制閥 -->
+                    <div class="lab-card d-flex align-items-center">
+                        <div class="form-check form-switch fs-4">
+                            <input type="checkbox" class="form-check-input" v-model="isOrder" id="orderSwitch">
+                            <label for="orderSwitch" class="form-check-label text-warning fw-bold ms-2">開啟火星漢堡生產線</label>
+                        </div>
+                    </div>
+                    
+                    <!-- 主點餐表單與報告（當開關開啟時顯示） -->
+                    <div v-if="isOrder" class="row">
+                        <!-- 左側：輸入表單 -->
+                        <div class="col-md-7">
+                            <div class="lab-card">
+                                <div class="h3 mb-3">📋 填寫實驗體（訂餐人）資料</div>
+                                <div class="mb-3">
+                                    <label for="customerName" class="form-label text-white-50">研究員/受試者姓名 (2-10字)</label>
+                                    <input type="text" id="customerName" class="form-control" v-model="customerName" 
+                                           :class="{'is-valid' : customerNameFlag === true, 'is-invalid' : customerNameFlag === false}">
+                                    <div class="valid-feedback">🧬 姓名識別碼符合規格</div>
+                                    <div class="invalid-feedback">❌ 請輸入正確長度的地球文字</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="customerCount" class="form-label text-white-50">投餵人數 (1-20人)</label>
+                                    <input type="number" id="customerCount" min="1" max="20" class="form-control" v-model="customerCount" 
+                                           :class="{'is-valid' : customerCountFlag === true, 'is-invalid' : customerCountFlag === false}">
+                                    <div class="valid-feedback">🛸 傳送人數在安全負載範圍內</div>
+                                    <div class="invalid-feedback">❌ 艙體容量限 1 至 20 人</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="memo" class="form-label text-white-50">特殊調配備註 (1-100字)</label>
+                                    <textarea id="memo" rows="3" class="form-control" placeholder="例如: 移除香菜基因、外星酸黃瓜加倍..." v-model="memo"
+                                              :class="{'is-valid' : memoFlag === true, 'is-invalid' : memoFlag === false}"></textarea>
+                                    <div class="valid-feedback">🧪 配方備註格式正確</div>
+                                    <div class="invalid-feedback">❌ 備註符號容量超出限制</div>
+                                    <div class="form-text text-end text-white-50 mt-1">目前字數: {{memo.length}} / 100</div>
+                                </div>
+                                
+                                <hr>
+                                <div class="h3 mb-3">🍔 選擇欲分析的漢堡配方</div>
+                                <div class="form-check meal-item" v-for="item in meals" :key="item.id">
+                                    <input type="checkbox" class="form-check-input" :value="item" v-model="selectedMeals" :id="item.id">
+                                    <label :for="item.id" class="form-check-label w-100 d-flex justify-content-between">
+                                        <span>☄️ {{item.name}}</span>
+                                        <span class="text-warning fw-bold">${{item.price}} 宇宙幣</span>
+                                    </label>
+                                </div>
+                                
+                                <hr>
+                                <div class="h3 mb-3">💳 能量交易方式</div>
+                                <div class="mb-3">
+                                    <select class="form-select" v-model="payType">
+                                        <option value="" disabled selected>請選擇交易協定...</option>
+                                        <option value="信用卡">星際信用卡</option>
+                                        <option value="現金">地球實體貨幣 (現金)</option>
+                                        <option value="LINE PAY">LINE PAY 跨星系支付</option>
+                                        <option value="APPLE PAY">APPLE PAY 銀河分部</option>
+                                    </select>
+                                </div>
+                                
+                                <hr>
+                                <div class="h3 mb-3">📦 物資提取渠道</div>
+                                <div class="d-flex justify-content-between flex-wrap gap-2">
+                                    <div class="form-check meal-item flex-fill">
+                                        <input type="radio" class="form-check-input" value="櫃台取餐" id="pickupType01" v-model="pickupType">
+                                        <label for="pickupType01" class="form-check-label fw-bold">🪐 基地櫃台領取</label>
+                                    </div>
+                                    <div class="form-check meal-item flex-fill">
+                                        <input type="radio" class="form-check-input" value="送到座位" id="pickupType02" v-model="pickupType">
+                                        <label for="pickupType02" class="form-check-label fw-bold">🚀 傳送至指定實驗桌</label>
+                                    </div>
+                                    <div class="form-check meal-item flex-fill">
+                                        <input type="radio" class="form-check-input" value="得來速" id="pickupType03" v-model="pickupType">
+                                        <label for="pickupType03" class="form-check-label fw-bold">🛸 飛行器得來速窗口</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右側：即時實驗報告與預覽 -->
+                        <div class="col-md-5">
+                            <div class="lab-card report-panel sticky-top" style="top: 80px;">
+                                <div class="h3 mb-3">📡 訂單即時分析報告</div>
+                                <div class="mb-3">研究員代號: 
+                                    <span v-if="customerName" class="report-data fs-5">{{customerName}}</span>
+                                    <span v-else class="text-muted italic">未知生命體</span>
+                                </div>
+                                <div class="mb-3">生命體數量: 
+                                    <span v-if="customerCount" class="report-data fs-5">{{customerCount}} 員</span>
+                                    <span v-else class="text-muted">待輸入計數</span>
+                                </div>
+                                <div class="mb-3">交易渠道: 
+                                    <span v-if="payType" class="text-info fw-bold">{{payType}}</span>
+                                    <span v-else class="text-muted">協定未定</span>
+                                </div>
+                                <div class="mb-3">傳送物流: 
+                                    <span v-if="pickupType" class="text-info fw-bold">{{pickupType}}</span>
+                                    <span v-else class="text-muted">路徑未規劃</span>
+                                </div>
+                                <div class="mb-3">配方修正案: 
+                                    <span v-if="memo" class="text-warning fs-6">{{memo}}</span>
+                                    <span v-else class="text-muted">標準原始配方</span>
+                                </div>
+                                
+                                <hr style="border-color: rgba(0,255,102,0.2)">
+                                
+                                <div class="mb-2 fw-bold text-white-50">🧬 封裝配方清單 (共計 {{selectedCount}} 項):</div>
+                                <ul class="list-group list-group-flush mb-3">
+                                    <li class="list-group-item d-flex justify-content-between p-2" v-for="item in selectedMeals" :key="item.id">
+                                        <span>🛸 {{item.name}}</span>
+                                        <span class="report-data">${{item.price}}</span>
+                                    </li>
+                                    <li v-if="selectedMeals.length === 0" class="list-group-item text-muted text-center py-3">
+                                        （目前無培養中的配方）
+                                    </li>
+                                </ul>
+                                
+                                <div class="h3 d-flex justify-content-between align-items-center mt-4">
+                                    <span class="fs-5 text-white-50">所需總能量:</span>
+                                    <span class="report-data fs-2">${{totalPrice}} <small class="fs-6">幣</small></span>
+                                </div>
+                                
+                                <div class="mt-4 text-end">
+                                    <button class="btn btn-mars btn-lg w-100 py-3" :disabled="!isFormValid" @click="submitOrder">
+                                        💥 啟動漢堡粒子傳送序列
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- row end -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/vue.global.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/sweetalert2@11.js"></script>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    title: '🪐 火星漢堡研究所 點餐系統 🧪',
+                    isOrder: false,
+                    meals: [
+                        { "id": 1, "name": "☄️ 奧林帕斯火山牛肉堡", "price": 240 },
+                        { "id": 2, "name": "💥 好奇號經典起司堡", "price": 165 },
+                        { "id": 3, "name": "🛸 火星沙塵暴花生培根堡", "price": 185 },
+                        { "id": 4, "name": "🛰️ 黑洞松露蕈菇牛肉堡", "price": 210 },
+                        { "id": 5, "name": "⚡ 赤色風暴流汁雞腿堡", "price": 175 },
+                        { "id": 6, "name": "🧬 銀河蜂蜜芥末烤雞堡", "price": 170 },
+                        { "id": 7, "name": "☄️ 隕石坑BBQ手撕豬肉堡", "price": 180 },
+                        { "id": 8, "name": "💥 基地經典雙層豬肉起司堡", "price": 160 },
+                        { "id": 9, "name": "🛸 宇宙綠洲植物肉培根堡", "price": 195 },
+                        { "id": 10, "name": "🛰️ 新星香酥鷹嘴豆餅堡", "price": 155 },
+                        { "id": 11, "name": "⚡ 星際微脆多汁炸雞(2塊)", "price": 110 },
+                        { "id": 12, "name": "🧬 火星研究員吮指雞柳條", "price": 95 },
+                        { "id": 13, "name": "☄️ 超重力1/4吋細脆薯條", "price": 55 },
+                        { "id": 14, "name": "💥 隕石松露起司薯球", "price": 75 },
+                        { "id": 15, "name": "🛸 火星落氣泡飲", "price": 65 },
+                        { "id": 16, "name": "🛰️ 極光冷萃咖啡", "price": 80 },
+                        { "id": 17, "name": "⚡ 太空艙經典錫蘭紅茶", "price": 40 },
+                        { "id": 18, "name": "🧬 全糖可口可樂", "price": 40 },
+                        { "id": 19, "name": "☄️ 全糖雪碧", "price": 40 },
+                        { "id": 20, "name": "💥 地球回憶套餐", "price": 79 },
+                        { "id": 21, "name": "🛸 火星登陸套餐", "price": 99 },
+                        { "id": 22, "name": "🛰️ 實驗室全能套餐", "price": 149 },
+                    ],
+                    selectedMeals: [],
+                    payType: '',
+                    pickupType: '',
+                    customerName: '',
+                    customerCount: 0,
+                    memo: '',
+
+                    customerNameFlag: null,
+                    customerCountFlag: null,
+                    memoFlag: null,
+                }
+            },
+            computed: {
+                totalPrice() {
+                    return this.selectedMeals.reduce((sum, item) => sum + item.price, 0);
+                },
+                selectedCount() {
+                    return this.selectedMeals.length;
+                },
+                //判斷訂單是否完整
+                isFormValid() {
+                    return this.customerNameFlag === true && this.customerCountFlag === true && this.memoFlag === true && this.selectedMeals.length > 0 && this.payType !== '' && this.pickupType !== '';
+                },
+            },
+            watch: {
+                customerName(newValue) {
+                    if (newValue.length === 0) {
+                        this.customerNameFlag = null;
+                    } else if (newValue.length >= 2 && newValue.length <= 10) {
+                        this.customerNameFlag = true;
+                    } else {
+                        this.customerNameFlag = false;
+                    }
+                },
+                customerCount(newValue) {
+                    if (newValue === 0 || newValue === null || newValue === '') {
+                        this.customerCountFlag = null;
+                    } else if (newValue >= 1 && newValue <= 20) {
+                        this.customerCountFlag = true;
+                    } else {
+                        this.customerCountFlag = false;
+                    }
+                },
+                memo(newValue) {
+                    if (newValue.length === 0) {
+                        this.memoFlag = null;
+                    } else if (newValue.length >= 1 && newValue.length <= 100) {
+                        this.memoFlag = true;
+                    } else {
+                        this.memoFlag = false;
+                    }
+                },
+            },
+            methods: {
+                //送出訂單
+                submitOrder() {
+                    const orderData = {
+                        customerName: this.customerName,
+                        customerCount: this.customerCount,
+                        memo: this.memo,
+                        meals: this.selectedMeals,
+                        payType: this.payType,
+                        pickupType: this.pickupType,
+                        selectedCount: this.selectedCount,
+                        totalPrice: this.totalPrice,
+                        status:"待處理"
+                    };
+                    console.log("封裝傳送數據中...",orderData);
+                    
+                    const token = localStorage.getItem('mars_token');
+                    axios.post('http://localhost:3000/api/orders', orderData, {
+                        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+                    })
+                        .then(function (response) {
+                            console.log("基地回應:",response);
+                            if (response.status == 201) {
+                                Swal.fire({
+                                    title: "訂單新增成功",
+                                    showDenyButton: false,
+                                    showCancelButton: false,
+                                    confirmButtonText: "確認",
+                                    denyButtonText: `Don't save`,
+                                    icon: 'success',
+                                    allowOutsideClick: 'false',
+                                    title: "💥 粒子傳送序列啟動成功！",
+                                    text: "漢堡分子正在重新組裝，請耐心等候...",
+                                    icon: 'success',
+                                    background: '#161b26', // 暗色系控制台底色
+                                    color: '#00ff66',      // 實驗室螢光綠字體
+                                    confirmButtonColor: '#ff5722', // 火星橘按鈕
+                                    confirmButtonText: "接收傳送訊號",
+                                    allowOutsideClick: false
+                                }).then((result) => {
+                                    if (result.isConfirmed) {location.href="marsburger_orderMeal.html";
+                                    }
+                                });
+                            }
+                        })
+                        .catch(function (error) {
+                            console.error("傳送序列崩潰:", error);
+                            Swal.fire({
+                                title: "⚠️ 傳送序列異常",
+                                text: error.response?.data?.message || "大氣層訊號干擾，請檢查後端服務與資料庫連線。",
+                                icon: 'error',
+                                background: '#161b26',
+                                color: '#ff3860',
+                                confirmButtonColor: '#3a4454'
+                            });
+                        })
+                        .finally(function () {
+                            // always executed
+                        });
+                }
+            },
+        }).mount("#app");
+    </script>
+
+</body>
+
+</html>

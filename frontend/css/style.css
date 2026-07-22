@@ -1,0 +1,45 @@
+/* 迷幻霧景(Foggy Landscapes) */
+:root{
+    :root {
+    /* --- [基礎霧底層 - Mist Layers] --- */
+    --fog-01: #ece4e2; /* 原 mycolor01 */
+    --fog-02: #f2ebe9;
+    --fog-03: #e5ddd0;
+    --fog-04: #d8d0c1;
+    --fog-05: #fcd3d1; /* 原 mycolor02 */
+    --fog-06: #fcdff3; /* 原 mycolor03 */
+    --fog-07: #f5e6f0;
+    --fog-08: #e8d9e5;
+
+    /* --- [迷幻光暈層 - Psychedelic Glows] --- */
+    --glow-sun: #fe929f; /* 原 mycolor04 */
+    --glow-pink: #ffb1bb;
+    --glow-lavender: #d1d6fb; /* 新增：冷調幻光 */
+    --glow-mint: #d1fbe5;     /* 新增：薄荷霧光 */
+    --glow-amber: #e4d6bd;    /* 原 shadow01 */
+    --glow-soft-gold: #f4e4bc;
+
+    /* --- [中景植物與地景 - Mid-ground] --- */
+    --land-gold: #b78338;   /* 原 textcolor01 */
+    --land-ochre: #cf9a4e;
+    --land-brown: #915c4c;  /* 原 textcolor02 */
+    --land-clay: #a67365;
+    --land-teal: #40686a;   /* 原 textcolor03 */
+    --land-moss: #5a7d7f;
+    --land-sand: #a88661;   /* 原 shadow02 */
+
+    /* --- [深景與陰影 - Deep Silhouettes] --- */
+    --void-brown: #2f1812;  /* 原 textcolor04 */
+    --void-bark: #4a2d26;
+    --void-slate: #504e63;  /* 原 shadow03 */
+    --void-dusk: #3a384d;
+    --void-deep: #00142f;   /* 原 shadow04 */
+    --void-night: #0a1b33;
+
+    /* --- [UI 輔助色 - Functional Mist] --- */
+    --ui-border: rgba(145, 92, 76, 0.2);
+    --ui-glass: rgba(236, 228, 226, 0.4);
+    --ui-highlight: #ffffff;
+}
+
+}

@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>火星漢堡研究所 - 賽博夕陽旗艦站</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@300;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+    :root {
+    --color-orange-main: #FF6A1C;
+    --color-orange-neon: #ff6b35; /* 強烈主橘 */
+    --color-yellow-bright: #FFDA62; /* 螢光明黃 */
+    --color-orange-pale: #FFAE56; /* 柔和粉橘 */
+    --color-pink-neon: #F5788B; /* 霓虹桃粉 */
+    --cyber-dark-bg: #1a0f0a; /* 科技暗橘黑基調 */
+    --cyber-dark-card: #2d1b13; /* 科技深色卡片底 */
+    --color-cyan-neon: #00f0ff;
+    --font-sci: 'Orbitron', 'Noto Sans TC', sans-serif;
+}
+
+body {
+    background-color: var(--cyber-dark-bg);
+    color: #fff5f0;
+    font-family: var(--font-sci);
+    scroll-behavior: smooth; /* 開啟全域絲滑平滑捲動效果 */
+}
+
+/* ==================== 全域通用元件 & 按鈕 (Global Utilities) ==================== */
+.cyber-p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #b0b5bc !important;
+}
+
+/* 整合後的次級微字體 */
+.cyber-p-sm {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #9fa4aa !important;
+    text-align: justify;
+}
+
+/* 整合後的全域發光特效 */
+.text-warning-glow {
+    color: #ffb703;
+    filter: drop-shadow(0 0 10px rgba(255, 183, 3, 0.6));
+}
+.text-pink-glow {
+    color: #ff2a85;
+    filter: drop-shadow(0 0 12px rgba(255, 42, 133, 0.5));
+}
+.text-cyan-glow {
+    color: #00f0ff;
+    filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.6));
+}
+.text-muted-glow {
+    color: #6c757d;
+    filter: drop-shadow(0 0 8px rgba(108, 117, 125, 0.4));
+}
+.text-orange-glow {
+    color: #ff6b35;
+    filter: drop-shadow(0 0 12px rgba(255, 107, 53, 0.5));
+}
+.text-neon-pink {
+    color: #ff2a85;
+    text-shadow: 0 0 10px rgba(255, 42, 133, 0.4);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+.text-neon-orange {
+    color: #ff6b35;
+    text-shadow: 0 0 8px rgba(255, 107, 53, 0.3);
+}
+.text-neon-yellow {
+    color: #ffb703;
+    text-shadow: 0 0 8px rgba(255, 183, 3, 0.3);
+}
+.text-neon-cyan {
+    color: #00f0ff;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+/* 按鈕系列整合 */
+.btn-cyber-orange {
+    background-color: var(--color-orange-main);
+    border-color: var(--color-orange-main);
+    color: #1a0f0a;
+    font-weight: bold;
+}
+.btn-cyber-orange:hover {
+    background-color: var(--color-orange-pale);
+    border-color: var(--color-orange-pale);
+    box-shadow: 0 0 15px var(--color-orange-main);
+}
+
+/* 合併後的桃粉外框按鈕 */
+.btn-cyber-outline {
+    background: transparent;
+    border: 1px solid var(--color-pink-neon);
+    color: var(--color-pink-neon);
+    border-radius: 4px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(245, 120, 139, 0.1);
+}
+.btn-cyber-outline:hover {
+    background-color: var(--color-pink-neon);
+    color: #fff;
+    box-shadow: 0 0 20px var(--color-pink-neon);
+    transform: translateY(-2px);
+}
+
+/* ==================== Section 1 & 2：導覽與頂欄 ==================== */
+.cyber-social-topbar {
+    background: linear-gradient(90deg, #24140d, #3d1f12);
+    border-bottom: 2px solid var(--color-orange-main);
+}
+.cyber-social-topbar a {
+    margin-left: 15px;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+.cyber-social-topbar a:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 8px var(--color-yellow-bright));
+}
+
+.cyber-navbar {
+    background: rgba(26, 15, 10, 0.85) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 106, 28, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+}
+.cyber-navbar .nav-link {
+    color: #e0e6ed !important;
+    transition: all 0.3s;
+    border-bottom: 2px solid transparent;
+    font-size: 0.95rem;
+}
+.cyber-navbar .nav-link:hover,
+.cyber-navbar .nav-link.active {
+    color: var(--color-yellow-bright) !important;
+    border-bottom: 2px solid var(--color-yellow-bright);
+}
+
+/* ==================== 彈出視窗系列 (Modals) ==================== */
+#registerModal .modal-content, #loginModal .modal-content {
+    background-color: #1a0f0a;
+    border: 2px solid #FF6A1C;
+    box-shadow: 0 0 30px rgba(255, 106, 28, 0.25);
+    color: #fff5f0;
+}
+#registerModal .modal-header, #loginModal .modal-header.text-bg-primary {
+    background: linear-gradient(90deg, #FF6A1C, #FFAE56) !important;
+    border-bottom: 2px solid #FFDA62;
+    color: #1a0f0a !important;
+}
+#registerModal .form-label, #loginModal .form-label {
+    color: #FFDA62;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+#registerModal .form-control, #loginModal .form-control {
+    background-color: #24140d !important;
+    border: 1px solid rgba(255, 106, 28, 0.4) !important;
+    color: #fff !important;
+    border-radius: 0px;
+    transition: all 0.3s;
+}
+#registerModal .form-control:focus, #loginModal .form-control:focus {
+    border-color: #F5788B !important;
+    box-shadow: 0 0 10px rgba(245, 120, 139, 0.5) !important;
+    background-color: #2d1b13 !important;
+}
+#registerModal .form-check-input, #loginModal .form-check-input {
+    background-color: #24140d;
+    border-color: #FF6A1C;
+}
+#registerModal .form-check-input:checked, #loginModal .form-check-input:checked {
+    background-color: #FF6A1C;
+    border-color: #FFDA62;
+    box-shadow: 0 0 8px #FF6A1C;
+}
+#registerModal .modal-footer, #loginModal .modal-footer {
+    border-top: 1px solid rgba(255, 106, 28, 0.15);
+}
+
+.cyber-terms-box {
+    background-color: #110906;
+    border: 1px solid rgba(255, 174, 86, 0.2);
+    padding: 20px;
+    height: 380px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #ffa473;
+}
+.cyber-terms-box::-webkit-scrollbar { width: 6px; }
+.cyber-terms-box::-webkit-scrollbar-thumb {
+    background: #F5788B;
+    border-radius: 3px;
+}
+
+.btn-cyber-submit {
+    background-color: #FF6A1C;
+    border-color: #FF6A1C;
+    color: #1a0f0a;
+    font-weight: bold;
+    border-radius: 0px;
+    transition: all 0.3s;
+}
+.btn-cyber-submit:hover {
+    background-color: #FFDA62;
+    border-color: #FFDA62;
+    color: #1a0f0a;
+    box-shadow: 0 0 15px #FFDA62;
+}
+
+/* ==================== 網頁各區域區塊 (Sections) ==================== */
+.dummy-section {
+    padding: 100px 0;
+    border-bottom: 1px solid rgba(255, 106, 28, 0.1);
+}
+.carousel-placeholder {
+    height: 350px;
+    background: radial-gradient(circle, #4a2d1f 0%, #2d1b13 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-pink-neon);
+}
+
+/* Section 3：輪播圖 */
+#carouselExampleCaptions .carousel-item::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(180deg, rgba(26, 15, 10, 0.2) 0%, rgba(26, 15, 10, 0.85) 100%);
+    z-index: 1;
+}
+#carouselExampleCaptions .carousel-caption {
+    z-index: 2;
+    bottom: auto; top: 50%; transform: translateY(-50%);
+    text-align: center; width: 80%; left: 10%;
+}
+#carouselExampleCaptions .carousel-caption h5 {
+    font-family: var(--font-sci);
+    font-size: 3rem; font-weight: 900; color: #ffffff;
+    text-shadow: 0 0 15px #FF6A1C, 0 0 30px #F5788B;
+    letter-spacing: 3px; margin-bottom: 15px;
+}
+#carouselExampleCaptions .carousel-caption p {
+    font-size: 1.2rem; color: #ffa473;
+    max-width: 700px; margin: 0 auto;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8); letter-spacing: 1px;
+}
+.cyber-badge-sm {
+    font-family: var(--font-sci); font-size: 0.85rem; color: #FFDA62;
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; display: block;
+}
+#carouselExampleCaptions .carousel-indicators [button] {
+    background-color: #FFAE56; height: 4px; opacity: 0.5;
+}
+#carouselExampleCaptions .carousel-indicators .active {
+    background-color: #FF6A1C !important; box-shadow: 0 0 8px #FF6A1C; opacity: 1;
+}
+#carouselExampleCaptions .carousel-control-prev, #carouselExampleCaptions .carousel-control-next {
+    width: 5%; z-index: 3;
+}
+#carouselExampleCaptions .carousel-control-prev-icon, #carouselExampleCaptions .carousel-control-next-icon {
+    filter: drop-shadow(0 0 5px #FF6A1C);
+}
+
+/* Section 4：品牌故事與計數器 */
+#s04 { background-color: #1a0f0a; border-bottom: 1px solid rgba(255, 106, 28, 0.15); overflow: hidden; }
+.cyber-story-img { position: relative; min-height: 450px; }
+.cyber-story-img::after {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(90deg, rgba(26, 15, 10, 0) 70%, #1a0f0a 100%), linear-gradient(180deg, rgba(245, 120, 139, 0.15) 0%, rgba(255, 106, 28, 0.15) 100%);
+}
+.cyber-story-title { color: #ffffff; text-shadow: 0 0 10px rgba(255, 106, 28, 0.6); letter-spacing: 2px; margin-bottom: 5px; }
+.cyber-story-p { color: #ffa473 !important; letter-spacing: 1px; line-height: 1.8; max-width: 650px; margin: 0 auto 15px auto; text-align: justify; }
+.cyber-counter-card {
+    background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 107, 53, 0.2); border-radius: 12px;
+    padding: 1.25rem 1rem; text-align: center; box-shadow: inset 0 0 15px rgba(255, 107, 53, 0.05); transition: all 0.3s ease;
+}
+.cyber-counter-card:hover {
+    border-color: var(--color-cyan-neon); box-shadow: 0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 10px rgba(0, 240, 255, 0.1); transform: translateY(-3px);
+}
+.cyber-counter-label { font-size: 0.85rem; color: #8a929a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+.cyber-counter-label i { color: var(--color-orange-neon); }
+.cyber-counter-number01, .cyber-counter-number02, .cyber-counter-number03, .cyber-counter-number04 {
+    color: #FFDA62 !important; font-family: var(--font-sci); text-shadow: 0 0 10px rgba(255, 218, 98, 0.5);
+}
+.cyber-counter-unit { color: var(--color-yellow-bright); margin-left: 2px; font-size: 0.9rem; }
+
+/* Section 5：時間軸 */
+#s05 { color: #ffffff; overflow: hidden; min-height: 100vh; }
+.s05-timeline-section { position: relative; padding: 2rem 0; }
+.cyber-icon-wrapper { transition: transform 0.3s ease; padding: 10px; }
+.cyber-icon-wrapper:hover { transform: translateY(-8px) scale(1.05); }
+.s05-img {
+    height: 280px; background-size: cover; background-position: center; border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.s05-img:hover { transform: scale(1.03); border-color: var(--color-orange-neon); box-shadow: 0 0 25px rgba(255, 107, 53, 0.3); }
+.timeline-num {
+    font-size: 3.5rem; font-weight: 900; background: linear-gradient(45deg, var(--color-orange-neon), var(--color-yellow-bright));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;
+}
+.s05-text p { font-size: 0.95rem; line-height: 1.6; color: #a0a5aa !important; }
+
+/* Section 8：會員卡片與階級 */
+.cyber-member-card {
+    background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px; height: 100%; transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+.cyber-member-card:hover {
+    background: rgba(255, 255, 255, 0.04); transform: translateY(-5px); border-color: rgba(0, 240, 255, 0.2); box-shadow: 0 10px 25px rgba(0, 240, 255, 0.05);
+}
+
+/* Section 9：FAQ 登陸須知 */
+.cyber-faq-list dt { font-size: 1.05rem; letter-spacing: 1px; border-left: 3px solid #ff6b35; padding-left: 10px; }
+.cyber-faq-list dt.text-neon-pink { border-left-color: #ff2a85; }
+.cyber-faq-list dd { font-size: 0.95rem; line-height: 1.6; color: #9fa4aa !important; }
+
+/* Section 10：互動導航表單 */
+.cyber-input {
+    background-color: rgba(15, 10, 8, 0.8) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; color: #ffffff !important; transition: all 0.3s ease;
+}
+.cyber-input:focus {
+    background-color: rgba(20, 15, 12, 0.9) !important; border-color: #00f0ff !important; box-shadow: 0 0 12px rgba(0, 240, 255, 0.25) !important;
+}
+.form-floating > .cyber-input:focus ~ label, .form-floating > .cyber-input:not(:placeholder-shown) ~ label { color: #00f0ff !important; }
+.form-floating > label { color: #8a8f95; }
+
+.btn-cyber-primary {
+    background: #00f0ff; color: #0b0706; border: none; font-weight: 700; letter-spacing: 1px; box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); transition: all 0.3s ease;
+}
+.btn-cyber-primary:hover { background: #00c2cc; box-shadow: 0 0 25px rgba(0, 240, 255, 0.7); transform: translateY(-1px); }
+.btn-cyber-secondary { background: transparent; color: #8a8f95; border: 1px solid rgba(255, 255, 255, 0.15); transition: all 0.2s ease; }
+.btn-cyber-secondary:hover { color: #ffffff; background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.3); }
+
+/* Section 11 */
+.s11-text { background-color: rgba(255, 255, 255, 0.3); margin-top: 15px; margin-bottom: 15px; border-radius: 15px; }
+
+/* ==================== Section 12 賽博頁尾樣式 ==================== */
+.cyber-footer {
+    background-color: #0b0e14; /* 深色沉穩背景 */
+    border-top: 1px solid rgba(255, 0, 127, 0.3); /* 頂部隱約的粉紅霓虹割線 */
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
+    font-family: 'Courier New', Courier, monospace, "Microsoft JhengHei";
+}
+
+/* 專題提示字體顏色 */
+.footer-notice {
+    color: #a0aec0;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+/* 科技感小標籤 */
+.cyber-tag-mini {
+    background: #dc3545;
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.6);
+}
+
+/* 右側導覽連結美化 */
+.footer-nav .nav-link {
+    color: #8a99ad !important;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0.8rem;
+}
+
+/* 滑鼠移入時的亮起效果 */
+.footer-nav .nav-link:hover {
+    color: #00f0ff !important; /* 青色科技霓虹光 */
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.8);
+    transform: translateY(-2px);
+}
+
+.text-muted {
+    color: #4a5568 !important;
+    font-size: 0.8rem;
+}
+/* ==================== 響應式斷點優化 (Media Queries) ==================== */
+@media (min-width: 768px) {
+    .s05-timeline-section::before {
+        position: absolute; content: ""; top: 0; bottom: 0; width: 4px;
+        background: linear-gradient(to bottom, transparent, #ff6b35 15%, #ffb703 85%, transparent);
+        left: 50%; transform: translateX(-50%); box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+    }
+    .s05-timeline-section-pointer::before {
+        position: absolute; content: ""; width: 16px; height: 16px; background-color: #ffb703;
+        top: 25px; border: 4px solid #110c0a; border-radius: 50%; left: 50%; transform: translateX(-50%); box-shadow: 0 0 12px #ff6b35; z-index: 2;
+    }
+}
+
+@media (max-width: 768px) {
+    #carouselExampleCaptions .carousel-caption h5 { font-size: 1.8rem; }
+    #carouselExampleCaptions .carousel-caption p { font-size: 0.95rem; }
+}
+
+@media (max-width: 767.98px) {
+    #s07 {
+        background-image: linear-gradient(rgba(11, 7, 6, 0.92), rgba(11, 7, 6, 0.92)), url('images/burger-16.jpg') !important;
+        background-size: cover; background-position: center;
+    }
+    .s07-text, .s09-text { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+    #s09 {
+        background-image: linear-gradient(rgba(11,7,6,0.95), rgba(11,7,6,0.94)), url(images/burger-21.jpg) !important;
+        background-size: cover; background-position: center;
+    }
+    .cyber-faq-list dt { border-left: none; border-bottom: 1px solid rgba(255, 107, 53, 0.2); padding-left: 0; padding-bottom: 4px; }
+}
+
+@media (max-width: 575.98px) {
+    .cyber-member-card { flex-direction: column; text-align: center; }
+    .cyber-member-icon { margin-right: 0 !important; margin-bottom: 1.5rem; width: 100%; }
+}
+
+</style>
+</head>
+
+<body>
+    <div id="app">
+
+    
+    <!-- Section 1| 社群連結 -->
+    <section class="cyber-social-topbar" id="s01">
+        <div class="container">
+            <div class="text-end py-2">
+                <a href="#facebook"><i class="fa-brands fa-square-facebook text-primary fa-2x"></i></a>
+                <a href="#instagram"><i class="fa-brands fa-square-instagram fa-2x"
+                        style="color: var(--color-pink-neon);"></i></a>
+                <a href="#line"><i class="fa-brands fa-line text-success fa-2x"></i></a>
+                <a href="#x"><i class="fa-brands fa-square-x-twitter text-white fa-2x"></i></a>
+            </div>
+        </div>
+    </section>
+    <!-- Section 2| Nav Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark cyber-navbar" id="s02">
+        <div class="container">
+            <a href="#s03" class="navbar-brand font-sci d-flex align-items-center gap-2 fw-bold">
+                <i class="fa-solid fa-rocket fa-lg" style="color: var(--color-orange-main);"></i>
+                <i class="fa-solid fa-burger fa-lg" style="color: var(--color-yellow-bright);"></i>
+                <span class="d-none d-sm-inline" style="color: var(--color-orange-pale); font-size: 1.25rem;">MARS
+                    LAB</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 font-sci">
+                    <li class="nav-item">
+                        <a href="#s03" class="nav-link active" aria-current="page">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#s04" class="nav-link"><i class="fa-solid fa-book-open me-1"></i>品牌故事</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#s05" class="nav-link"><i class="fa-solid fa-burger me-1"></i>點餐流程</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#s06" class="nav-link"><i class="fa-solid fa-champagne-glasses me-1"></i>資源特色</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#s07" class="nav-link"><i class="fa-solid fa-tags me-1"></i>會員專屬</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#s08" class="nav-link"><i class="fa-solid fa-star me-1"
+                                style="color: var(--color-yellow-bright)"></i>能力升級</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#s09" class="nav-link"><i class="fa-solid fa-location-dot me-1"></i>常見問答</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#s11" class="nav-link"><i class="fa-solid fa-envelope me-1"></i>門市資訊</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="marsburger_orderMeal.html" class="nav-link"
+                            style="color: var(--color-orange-main)"><i
+                                class="fa-solid fa-cart-shopping me-1"></i>立即點餐</a>
+                    </li>
+                </ul>
+
+                <!-- 頂部導覽列：動態切換登入/會員狀態 -->
+<div class="d-flex gap-2">
+    <!-- 未登入狀態 -->
+    <template v-if="!currentUser">
+        <button class="btn btn-cyber-outline btn-sm px-3" data-bs-toggle="modal" data-bs-target="#loginModal">登入</button>
+        <button class="btn btn-cyber-orange btn-sm px-3" data-bs-toggle="modal" data-bs-target="#registerModal">註冊</button>
+    </template>
+
+    <!-- 已登入狀態 -->
+    <template v-else>
+        <span class="text-warning align-self-center">歡迎，太空人 {{ currentUser.username }}</span>
+        <button class="btn btn-outline-danger btn-sm" @click="handleLogout">登出</button>
+    </template>
+</div>
+
+<!-- 會員專屬訂單顯示區域 (僅登入後顯示) -->
+<div class="container mt-4" v-if="currentUser">
+    <h3 class="text-warning"><i class="fa-solid fa-list-check me-2"></i>星際傳送紀錄 // 我的訂單</h3>
+    
+    <div class="table-responsive mt-3" v-if="userOrders.length > 0">
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th>訂單編號</th>
+                    <th>下單時間</th>
+                    <th>金額</th>
+                    <th>傳送狀態</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="order in userOrders" :key="order.id">
+                    <td>{{ order.order_number }}</td>
+                    <td>{{ order.created_at }}</td>
+                    <td>${{ order.total_amount }}</td>
+                    <td><span class="badge bg-info">{{ order.status }}</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div v-else class="text-white-50">尚無傳送紀錄，快去點一份奧林帕斯火山牛肉堡吧！</div>
+</div>
+            </div>
+        </div>
+    </nav>
+    <!-- registerModal -->
+    <div class="modal fade" id="registerModal" data-bs-backdrop="static" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-bg-warning px-4 py-3">
+                    <h1 class="modal-title fs-3 fw-bold font-sci" id="exampleModalLabel">
+                        <i class="fa-solid fa-user-gear me-2"></i>MARS-NET // 會員核心註冊
+                    </h1>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-6">
+                            <div class="fs-4 fw-bold mb-3" style="color: #FFDA62;">
+                                <i class="fa-solid fa-file-shield me-2"></i>會員通訊協議條款
+                            </div>
+
+                            <div class="cyber-terms-box">
+                                <p class="fw-bold">// 歡迎加入火星漢堡研究所（以下簡稱「本研究所」）星際通訊網路矩陣。</p>
+
+                                <p>【第一條：服務初始化與帳號安全】<br>
+                                    使用者於點擊「確認註冊」時，即視為同意接受本通訊協議之所有規範。您必須妥善保管您的帳號憑證與密碼金鑰。任何透過該帳號傳輸之數據包與點餐指令，皆視為您本人之有效行為。若發現帳號遭不當第三方攔截，請立即連通本所星際指揮部。
+                                </p>
+
+                                <p>【第二條：個人數據與量子隱私保護】<br>
+                                    本研究所承諾依照大氣層隱私安全法規保護您的個人資料（包含但不限於地球通訊編碼、DNA風味偏好、量子支付金鑰等）。我們僅將數據用於卡路里注入優化、蟲洞外送定位以及極限壓力測試之數據統計，絕不向第三方非法外洩您的碳水化合物偏好。
+                                </p>
+
+                                <p>【第三條：星際交易與量子跳轉支付】<br>
+                                    所有於本平台上進行之點餐行為，皆採用 256-bit
+                                    風味加密通訊。使用者可使用火星信用點、指定加密貨幣進行量子跳轉支付。一旦點餐控制台顯示「傳送矩陣初始化完成」，除不可抗力之星際風暴或重力塌陷外，訂單將不予取消或更改傳送座標。
+                                </p>
+
+                                <p>【④ 條：智慧財產權與反物質調味保護】<br>
+                                    本研究所網站內所有重組大麥克模組、高能勁辣雞腿堡配方、反重力可樂杯結構、以及「Cyber-Sunset」暖霓虹網頁視覺協議，均屬本研究所或相關權利人依法擁有之智慧財產權。非經書面授權，禁止任何形式之矩陣複製、解碼或反向工程。
+                                </p>
+
+                                <p>【第五條：協議修改與終端中斷】<br>
+                                    本研究所有權於任何時間，因應大氣層環境變化或核心升級，修訂本服務條款。修訂後之數據包將直接公告於首頁控制台，不另行單向通訊通知。若使用者違反本協議（如惡意灌入垃圾數據包、干擾點餐蟲洞運作），本所有權立即終止或凍結該帳號之傳送權限。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-6 ps-4 border-start border-secondary border-opacity-25">
+    <div class="mb-3">
+        <label for="regAccount" class="form-label"><i class="fa-solid fa-terminal me-2"></i>星際登入帳號</label>
+        <!-- 加上 v-model="regAccount" -->
+        <input type="text" id="regAccount" v-model="regAccount" class="form-control" placeholder="請設定 6-20 位英數字編碼">
+    </div>
+    <div class="mb-3">
+        <label for="regPassword" class="form-label"><i class="fa-solid fa-key me-2"></i>核心存取密碼</label>
+        <!-- 加上 v-model="regPassword" -->
+        <input type="password" id="regPassword" v-model="regPassword" class="form-control" placeholder="請輸入高強度密碼">
+    </div>
+    <div class="mb-3">
+        <label for="regPasswordConfirm" class="form-label"><i class="fa-solid fa-shield-halved me-2"></i>確認存取密碼</label>
+        <!-- 加上 v-model="regPasswordConfirm" -->
+        <input type="password" id="regPasswordConfirm" v-model="regPasswordConfirm" class="form-control" placeholder="請再次輸入密碼以驗證">
+    </div>
+    <div class="mb-3">
+        <label for="regEmail" class="form-label"><i class="fa-solid fa-envelope me-2"></i>地球通訊編碼 (Email)</label>
+        <!-- 加上 v-model="regEmail" -->
+        <input type="email" id="regEmail" v-model="regEmail" class="form-control" placeholder="name@mars-net.com">
+    </div>
+    <div class="mb-3 pt-2">
+        <!-- 加上 v-model="regAgree" -->
+        <input type="checkbox" id="regAgree" v-model="regAgree" class="form-check-input me-2">
+        <label for="regAgree" class="form-check-label text-white-50 small">我已詳細閱讀並同意遵守上述所有星際通訊協議條款</label>
+    </div>
+</div>
+
+<div class="modal-footer px-4 py-3 bg-black bg-opacity-25">
+    <button type="button" class="btn btn-outline-secondary font-sci px-4 text-white" data-bs-dismiss="modal" style="border-radius: 0px;">ABORT // 取消</button>
+    <!-- 加上 @click="handleRegister" -->
+    <button type="button" class="btn btn-cyber-orange font-sci px-4" @click="handleRegister" style="border-radius: 0px;">
+        <i class="fa-solid fa-user-plus me-2"></i>REGISTER // 確認註冊
+    </button>
+</div>
+            </div>
+        </div>
+    </div>
+    <!-- loginModal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-bg-primary px-4 py-3">
+                    <h1 class="modal-title fs-5 fw-bold font-sci" id="exampleModalLabel">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i>MARS-NET // 會員核心登入
+                    </h1>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4">
+    <div class="mb-3">
+        <label for="loginAccount" class="form-label"><i class="fa-solid fa-terminal me-2"></i>星際通訊帳號 / Email</label>
+        <!-- 加上 v-model="loginAccount" -->
+        <input type="text" id="loginAccount" v-model="loginAccount" class="form-control" placeholder="請輸入註冊的帳號編碼">
+    </div>
+
+    <div class="mb-3">
+        <label for="loginPassword" class="form-label"><i class="fa-solid fa-key me-2"></i>存取密碼金鑰</label>
+        <!-- 加上 v-model="loginPassword" -->
+        <input type="password" id="loginPassword" v-model="loginPassword" class="form-control" placeholder="請輸入密碼">
+    </div>
+    
+    <!-- ... 中間保持不變 ... -->
+</div>
+
+<div class="modal-footer px-4 py-3 bg-black bg-opacity-25">
+    <button type="button" class="btn btn-outline-secondary text-white font-sci px-3" data-bs-dismiss="modal" style="border-radius: 0px;">
+        ABORT // 關閉
+    </button>
+    <!-- 加上 @click="handleLogin" -->
+    <button type="button" class="btn btn-cyber-submit font-sci px-4" @click="handleLogin">
+        <i class="fa-solid fa-unlock-keyhole me-2"></i>ACCESS // 驗證登入
+    </button>
+</div>
+            </div>
+        </div>
+    </div>
+    <!-- Section 3| Hero Carousel -->
+    <section class="container dummy-section text-center" id="s03">
+        <h2 style="color: var(--color-yellow-bright);">火星研究室成果發表</h2>
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active"
+                    style="background-image: url(images/burger-1.jpg); height: 90vh; background-position: center center; background-size: cover;">
+                    <div class="carousel-caption d-flex flex-column justify-content-center h-100">
+                        <span class="cyber-badge-sm">// CORE ENERGY: OVERCLOCKED MODULE //</span>
+                        <h5>熱核重組大麥克</h5>
+                        <p class="d-block">運用奧林帕斯地底強子對撞機，完美解構純牛肉膳食纖維。注入 256-bit 獨家加密風味醬汁，這不只是漢堡，更是您機械核心的終極燃料源。</p>
+                    </div>
+                </div>
+                <div class="carousel-item"
+                    style="background-image: url(images/burger-2.jpg); height: 90vh; background-position: center center; background-size: cover;">
+                    <div class="carousel-caption d-flex flex-column justify-content-center h-100">
+                        <span class="cyber-badge-sm">// VELOCITY QUANTUM: GOLDEN CRISP //</span>
+                        <h5>高頻震盪麥脆鷄</h5>
+                        <p class="d-block">外皮經由高頻分子震盪技術完美對齊，達到絕對黃金酥脆度；內層完美鎖水、鮮嫩多汁。在低重力環境下，釋放跨越星系的極致美味外殼。</p>
+                    </div>
+                </div>
+                <div class="carousel-item"
+                    style="background-image: url(images/burger-3.jpg); height: 90vh; background-position: center center; background-size: cover;">
+                    <div class="carousel-caption d-flex flex-column justify-content-center h-100">
+                        <span class="cyber-badge-sm">// TELEPORTATION: ZERO-G FLAVOR //</span>
+                        <h5>量子蟲洞光速傳送</h5>
+                        <p class="d-block">內嵌微型反重力矩陣包裝，保證在激烈的大氣層跳轉運送中液體絕不外灑。在地球控制台一鍵下單，熱騰騰的高能卡路里數據包將瞬間橫跨軌道！</p>
+                    </div>
+                </div>
+
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+    <!-- Section 4| counterup 數據 得獎數目 量化數據... -->
+    <section id="s04" class="container-fluid p-0" style="background-color: #0b0706;">
+        <div class="row g-0">
+            <div class="col-md-5 cyber-story-img"
+                style="background-image: url(images/burger-4.jpg); background-position: center center; background-size: cover;">
+            </div>
+            <div class="col-md-7 py-5 px-4 px-lg-5 d-flex flex-column justify-content-center text-center">
+                <div class=" display-5 fw-bolder cyber-story-title text-light mb-1">西元2026年<br><span
+                        class="d-md-inline d-block"
+                        style="color: var(--color-pink-neon); text-shadow: 0 0 10px rgba(245,120,139,0.5);">全台第一家</span>
+                </div>
+                <div class="display-6 fw-bolder mb-4"
+                    style="color: var(--color-yellow-bright);text-shadow: 0 0 10px rgba(255,183,3,0.3);">臺中西屯本店</div>
+                <div class="cyber-story-body mb-5">
+                    <p class="fs-7 cyber-story-p text-start">
+                        <span class="text-neon-cyan d-block mb-1">//
+                            數據包初始化完成。</span>火星漢堡研究所在2025年於台中西屯核心地帶建立了全台首座「高能卡路里傳送矩陣」。我們打破了傳統美式餐飲的常規疆界，將無重力烹飪美學與地表頂級食材進行跨星系重組，立志為每一位碳基生命體提供超越大氣層限制的極致風味體驗。
+                    </p>
+                    <p class="fs-7 cyber-story-p text-start">
+                        身為全台引領太空科幻浪潮的旗艦漢堡實驗室，西屯本店內建量子分子震盪烤爐與反重力低溫熟成艙，完美鎖住純牛肉餅中每一顆高能肉汁粒子。在這裡，進食不再只是單純的生物能量補充，而是一場橫跨光年、探索反物質調味的星際感官漫遊。
+                    </p>
+                    <p class="fs-7 cyber-story-p text-start">
+                        我們以台中西屯為原點，將賽博夕陽的溫暖霓虹發散至全台各個前哨基地。不論您是需要高能熱核燃料的星際商旅，還是熱愛探索未知風味的軌道先鋒，火星漢堡研究所都將隨時打開點餐蟲洞，將最剛出爐的太空美味精準投遞。
+                    </p>
+                </div>
+                <!-- Counterup 數據卡片區 -->
+                <div class="container-fluid p-0">
+                    <div class="row g-3">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="cyber-counter-card">
+                                <div class="cyber-counter-label"><i class="fa-solid fa-chart-line me-2"></i>年銷售量
+                                </div>
+                                <div class="fw-bold cyber-counter-number01">10000 <span
+                                        class="cyber-counter-unit">顆+</span></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="cyber-counter-card">
+                                <div class="cyber-counter-label"><i class="fa-solid fa-satellite-dish me-2"></i>分店數量
+                                </div>
+                                <div class="fw-bold cyber-counter-number02">10 <span
+                                        class="cyber-counter-unit">家</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="cyber-counter-card">
+                                <div class="cyber-counter-label"><i class="fa-solid fa-coins me-2"></i>年營業額</div>
+                                <div class="fw-bold cyber-counter-number03">100000 <span
+                                        class="cyber-counter-unit">萬</span></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="cyber-counter-card">
+                                <div class="cyber-counter-label"><i class="fa-solid fa-network-wired me-2"></i>加盟店數
+                                </div>
+                                <div class="fw-bold cyber-counter-number04">5 <span class="cyber-counter-unit">家</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Section 5| 時間軸排版 點餐順序 -->
+    <section id="s05" class="py-5"
+        style="background-image: linear-gradient(rgba(17,12,10,0.85), rgba(17,12,10,0.85)), url(images/burger-5.jpg); background-position: center center; background-size: cover; background-attachment: fixed;">
+        <div class="container">
+            <!-- 標題美化，改為火星霓虹感橘紅 -->
+            <div class="display-3 fw-bolder py-5 text-center text-uppercase tracking-wider"
+                style="color: #ff6b35; text-shadow: 0 0 15px rgba(255,107,53,0.4);">火星點餐指令</div>
+            <div class="s05-timeline-section">
+                <!-- 步驟 1 -->
+                <div class="row align-items-center s05-timeline-section-pointer mb-5">
+                    <div class="col-md-6 mt-3 text-md-end text-center pe-md-5">
+                        <div class="s05-text">
+                            <div class="h1 fw-black timeline-num">01</div>
+                            <div class="h3 fw-bold text-light mb-2">挑選你的火星肉排</div>
+                            <p class="text-muted">重磅厚切純牛肉、極致拉絲起司，外加主廚特調火星岩漿醬。</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-3 ps-md-5">
+                        <div class="s05-img" style="background-image: url(images/burger-10.jpg);"></div>
+                    </div>
+                </div>
+                <!-- 步驟 2 -->
+                <div class="row align-items-center s05-timeline-section-pointer flex-row-reverse mb-5">
+                    <div class="col-md-6 mt-3 text-md-start text-center ps-md-5">
+                        <div class="s05-text">
+                            <div class="h1 fw-black timeline-num">02</div>
+                            <div class="h3 fw-bold text-light mb-2">客製化宇宙配料</div>
+                            <p class="text-muted">酸黃瓜、烤培根，還是要雙倍墨西哥辣椒？自由組合你的防空洞補給。</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-3 pe-md-5">
+                        <div class="s05-img" style="background-image: url(images/burger-20.jpg);"></div>
+                    </div>
+                </div>
+                <!-- 步驟 3 -->
+                <div class="row align-items-center s05-timeline-section-pointer mb-5">
+                    <div class="col-md-6 mt-3 text-md-end text-center pe-md-5">
+                        <div class="s05-text">
+                            <div class="h1 fw-black timeline-num">03</div>
+                            <div class="h3 fw-bold text-light mb-2">升級流星探測副餐</div>
+                            <p class="text-muted">黃金脆薯、酥炸洋蔥圈，搭配太空總署認證的無重力極致口感。</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-3 ps-md-5">
+                        <div class="s05-img" style="background-image: url(images/burger-19.jpg);"></div>
+                    </div>
+                </div>
+                <!-- 步驟 4 -->
+                <div class="row align-items-center s05-timeline-section-pointer flex-row-reverse mb-5">
+                    <div class="col-md-6 mt-3 text-md-start text-center ps-md-5">
+                        <div class="s05-text">
+                            <div class="h1 fw-black timeline-num">04</div>
+                            <div class="h3 fw-bold text-light mb-2">注入液態推進劑</div>
+                            <p class="text-muted">沁涼酷爽的可樂或精釀啤酒，洗刷你在太空中漂流的乾渴。</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-3 pe-md-5">
+                        <div class="s05-img" style="background-image: url(images/burger-22.jpg);"></div>
+                    </div>
+                </div>
+                <!-- 步驟 5 -->
+                <div class="row align-items-center s05-timeline-section-pointer mb-5">
+                    <div class="col-md-6 mt-3 text-md-end text-center pe-md-5">
+                        <div class="s05-text">
+                            <div class="h1 fw-black timeline-num">05</div>
+                            <div class="h3 fw-bold text-light mb-2">傳送艙發射取餐</div>
+                            <p class="text-muted">完成結帳，前往1號停機坪，準備迎接熱騰騰的火星漢堡！</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-3 ps-md-5">
+                        <div class="s05-img" style="background-image: url(images/burger-9.jpg);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6| 火星核心科技與三大承諾  -->
+    <section id="s06" class="py-5" style="background-color: #110c0a; border-top: 1px solid rgba(255, 107, 53, 0.1);">
+        <div class="container py-4">
+            <div class="row g-4">
+                <!-- 優勢 01：肉排食材 -->
+                <div class="col-md-4 text-center px-4">
+                    <div class="cyber-icon-wrapper mb-3"><i class="fa-solid fa-burger fa-5x text-warning-glow"></i>
+                    </div>
+
+                    <div class="h2 fw-bold text-light mb-3">100% 重核肉質粒子</div>
+                    <p class="cyber-p-sm">嚴選地表最頂級安格斯純牛肉，經反重力低溫熟成艙技術處理。絕不添加外星未知填充物，每一口都是高能卡路里的終極爆發，完美釋放碳基生命體所需的肉汁能量。</p>
+                </div>
+                <!-- 優勢 02：配方調味（圖示從 fa-bars 改為更有科技感或連結感的 icon） -->
+                <div class="col-md-4 text-center px-4">
+                    <div class="cyber-icon-wrapper mb-3">
+                        <i class="fa-solid fa-flask-vial fa-5x text-pink-glow"></i>
+                    </div>
+                    <div class="h2 fw-bold text-light mb-3">反物質秘製醬汁</div>
+                    <p class="cyber-p-sm">由火星風味實驗室調配的跨星系矩陣醬汁。融合了賽博夕陽的微辣霓虹與星雲甜味，經量子震盪混合同步，能在你的味蕾上引發前所未有的超新星爆炸。</p>
+                </div>
+
+                <!-- 優勢 03：火候烹調 -->
+                <div class="col-md-4 text-center px-4">
+                    <div class="cyber-icon-wrapper mb-3">
+                        <i class="fa-solid fa-fire-burner fa-5x text-cyan-glow"></i>
+                    </div>
+                    <div class="h2 fw-bold text-light mb-3">熱核高溫瞬燃炙烤</div>
+                    <p class="cyber-p-sm">捨棄傳統瓦斯，導入熱核分子震盪烤爐。以攝氏450度極速封存肉餅表面，形成完美的焦脆梅納反應外殼，鎖住100% 反物質肉汁粒子，口口都是宇宙級震撼。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7 | 火星前哨基地服務項目 -->
+    <section id="s07" class="position-relative py-5 py-md-0" style="background-color: #0b0706; overflow: hidden;">
+        <div class="row g-0">
+            <!-- 左側固定大圖：在手機版會自動隱藏或依比例顯示，大螢幕則完美滿版 -->
+            <div class="col-md-5 position-absolute top-0 bottom-0 start-0 d-none d-md-block"
+                style="background-image:linear-gradient(to right, transparent, rgba(11,7,6,0.3)), url(images/burger-16.jpg); background-position: center center; background-size: cover;z-index: 1;">
+            </div>
+        </div>
+        <div class="container position-relative" style="z-index: 2;">
+            <div class="row justify-content-end">
+                <!-- 右側文字區塊（增加了上下 Padding 與深色透明背景，防止大螢幕破版） -->
+                <div class="col-md-7 py-5 ps-md-5 s07-text text-light">
+                    <span class="text-neon-pink d-block mb-2 font-monospace">// BASE SERVICES</span>
+                    <div class="display-6 fw-bold text-light mb-3">基地能源補給企劃</div>
+                    <p class="cyber-p text-muted mb-4">
+                        火星漢堡研究所不只是高能熱量的製造所，更是全台碳基生命體的星際中繼站。我們提供全方位的風味發射服務，無論您身在防空洞、軌道前哨站，還是位於台中的核心座標，我們的能量傳送矩陣都已全載運轉，隨時為您跨界投遞剛出爐的反物質美味。
+                    </p>
+                    <!-- 按鈕改為螢光橘粉色邊框 -->
+                    <button class="btn btn-cyber-outline mb-5">解鎖服務權限 <i
+                            class="fa-solid fa-arrow-right-long ms-2"></i></button>
+                    <!-- 下方兩個子區塊 -->
+                    <div class="row g-4">
+                        <!-- 子項目 01 -->
+                        <div class="col-md-6">
+                            <div class="h4 fw-bold mb-2 text-neon-orange"><i
+                                    class="fa-solid fa-jet-fighter-up me-2"></i>蟲洞極速外送</div>
+                            <p class="cyber-p-sm text-muted">
+                                啟動高能傳送蟲洞！本店內建獨家「微型熱核保溫艙」，與各大星際艦隊（外送平台）深度聯網。不論在地表哪一個角落下達指令，碳烤肉餅與高能卡路里都將在熱度衰減前，精準空投至您的座標。
+                            </p>
+                        </div>
+                        <!-- 子項目 02 -->
+                        <div class="col-md-6">
+                            <div class="h4 fw-bold mb-2 text-neon-yellow"><i
+                                    class="fa-solid fa-shield-halved me-2"></i>戰術包場與突擊慶典</div>
+                            <p class="cyber-p-sm text-muted">
+                                西屯本店開放量子發射艙包場服務！內建賽博霓虹燈效與多維度環繞音響，適合星際戰隊聚會、重核慶生突擊或科技廠區能量補給。由研究員全程控火，為您的社交矩陣注入最高燃點。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8 | 火星探險者資格協議（會員階級） -->
+    <section id="s08" class="py-5" style="background-color: #0b0706; border-top: 1px solid rgba(0, 240, 255, 0.1);">
+        <div class="container py-4">
+            <!-- 區塊大標題 -->
+            <div class="text-center mb-5">
+                <span class="text-neon-cyan d-block mb-2 font-monospace">// IDENTITY DECK</span>
+                <div class="display-5 fw-bolder text-light">星際身份解鎖協議</div>
+                <p class="text-muted mt-2">根據您的能量消耗紀錄，系統將自動升級您的跨星系特權層級。</p>
+            </div>
+            <div class="row g-4">
+                <!-- 01. 地表碳基散客（原一般客戶） -->
+                <div class="col-md-6 mt-3">
+                    <div class="cyber-member-card p-4 d-flex align-items-start">
+                        <div class="cyber-member-icon me-4 text-muted-glow"><i
+                                class="fa-solid fa-user-astronaut fa-4x"></i></div>
+                                <div>
+                                   <div class="h4 fw-bold text-light mb-2">地表碳基散客 <span
+                            class="badge bg-secondary fs-8 ms-2">LV.01</span></div>
+                    <p class="cyber-p-sm text-muted mb-0">
+                        剛登陸火星前哨站的初級探險者。完成基礎數據包初始化後即可點餐，享有基本的「高能卡路里傳送權限」。雖然尚未解鎖折扣蟲洞，但每一次進食都在為你的星際引擎累積初始燃料。
+                    </p>
+                    </div>                             
+                    </div>                    
+                </div>              
+                <!-- 02. 軌道飛行先鋒（原一般會員） -->
+                <div class="col-md-6 mt-3">
+                    <div class="cyber-member-card p-4 d-flex align-items-start">
+                        <div class="cyber-member-icon me-4 text-orange-glow"><i class="fa-solid fa-rocket fa-4x"></i></div>
+                        <div>
+                            <div class="h4 fw-bold text-neon-orange mb-2">軌道飛行先鋒 <span class="badge bg-orange fs-8 ms-2" style="background-color: #ff6b35;">LV.02</span></div>
+                    <p class="cyber-p-sm text-muted mb-0">經研究所認證的常駐飛行員。單月能量補給達 3 次即可晉升，解鎖「反物質醬汁免費加量矩陣」。享有專屬極速蟲洞外送優先權，讓你在漂流的宇宙中永遠不會因為燃料不足而失速。
+                    </p>    
+                        </div>                               
+                    </div>                    
+                </div>
+                <!-- 03. 星雲白金領航員（原白金會員） -->
+                <div class="col-md-6 mt-3">
+                    <div class="cyber-member-card p-4 d-flex align-items-start">
+                        <div class="cyber-member-icon me-4 text-pink-glow">
+                            <i class="fa-solid fa-crown fa-4x"></i></div>
+                        <div>
+                         <div class="h4 fw-bold text-neon-pink mb-2">星雲白金領航員 <span class="badge bg-pink fs-8 ms-2" style="background-color: #ff2a85;">LV.03</span></div>
+                    <p class="cyber-p-sm text-muted mb-0">掌控星系航道的資深指揮官。年度補給點數達標後解鎖，全品項發射指令（點餐）享有 9 折量子折扣。生日當月贈送「熱核高溫瞬燃副餐組合包」，並開放基地戰術包場優先預約權。
+                    </p>     
+                        </div>                               
+                    </div>                   
+                </div>
+                <!-- 04. 終極鑽石艦長（原鑽石會員） -->
+                <div class="col-md-6 mt-3">
+                    <div class="cyber-member-card p-4 d-flex align-items-start">
+                        <div class="cyber-member-icon me-4 text-cyan-glow">
+                            <i class="fa-solid fa-gem fa-4x"></i></div>
+                        <div>
+                            <div class="h4 fw-bold text-neon-cyan mb-2">終極鑽石艦長 <span class="badge bg-cyan text-dark fs-8 ms-2" style="background-color: #00f0ff;">MAX</span></div>
+                    <p class="cyber-p-sm text-muted mb-0">火星漢堡研究所最高榮譽合夥人。解鎖全載 85 折最高防禦特權，不定期傳送「主廚反物質實驗性新品試吃包」至您的指定座標。擁有 1 號停機坪專屬取餐蟲洞，進店即受最高星際禮遇。
+                    </p>   
+                        </div>                               
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9 | 火星前哨站登陸須知 (FAQ) -->
+    <section id="s09" class="position-relative py-5 py-md-0" style="background-color: #0b0706; overflow: hidden;">
+        <div class="container position-relative" style="z-index: 2;">
+            <div class="row">
+                <div class="col-md-7 py-5 pe-md-5 s09-text text-light">
+                    <span class="text-neon-cyan d-block mb-2 font-monospace">// TRANSMISSION LOGS</span>
+                    <div class="display-6 fw-bold text-light mb-4">探險者登陸須知 & FAQ</div>
+
+                    <dl class="row cyber-faq-list">
+                        <!-- 問題 01 -->
+                        <dt class="col-sm-3 text-neon-orange fw-bold mb-1 mb-sm-3">Q1. 補給限制</dt>
+                        <dd class="col-sm-9 text-white mb-3 mb-sm-4">前哨站現場座位有限。每日熱核高溫瞬燃烤爐能量固定，肉排售完將提早關閉傳送艙。建議高階指揮官提前啟動線上預約。</dd>
+                        <!-- 問題 02 -->
+                        <dt class="col-sm-3 text-neon-orange fw-bold mb-1 mb-sm-3">Q2. 反物質醬汁</dt>
+                        <dd class="col-sm-9 text-white mb-3 mb-sm-4">
+                            <p class="mb-1">我們的秘製醬汁內含賽博夕陽微辣粒子。一般人類碳基生命體均可正常代謝，若您完全不耐辣，請於點餐指令中選擇「量子去辣」模式。</p>
+                            <p class="mb-0 text-secondary small">* 註：地獄火星超新星口味辣度極高，嘗試前請確保您的胃壁防禦裝甲已升級。</p>
+                        </dd>
+                        <!-- 問題 03 -->
+                        <dt class="col-sm-3 text-neon-orange fw-bold mb-1 mb-sm-3">Q3. 晶片支付</dt>
+                        <dd class="col-sm-9 text-white mb-3 mb-sm-4">我們全面支援地表主流的數位能量結算方式，包含各大信用卡、Apple Pay 以及 LINE Pay 矩陣結帳，不接受星際隕石或外星未知硬幣。</dd>
+                        <!-- 問題 04（原 text-truncate 區塊） -->
+                        <dt class="col-sm-3 text-neon-orange fw-bold text-truncate mb-1 mb-sm-3" title="Q4. 座標西屯航線指南">Q4. 座標西屯航線</dt>
+                        <dd class="col-sm-9 text-white mb-3 mb-sm-4">基地設立於台中市西屯區的核心座標。周邊備有特約反重力載具停泊艙（特約停車場），基地消費滿額即可折抵停泊時數。</dd>
+                        <!-- 問題 05（嵌套列表改為特殊提醒） -->
+                        <dt class="col-sm-3 text-neon-pink fw-bold mb-1 mb-sm-3">⚠ 協議終止</dt>
+                        <dd class="col-sm-9 text-muted">
+                            <dl class="row g-0 m-0">
+                                <dt class="col-sm-4 text-light fw-bold mb-1">關於外帶肉汁流失：</dt>
+                                <dd class="col-sm-8 text-secondary small">漢堡自射出（出餐）後，美味能量會隨時間遞減。強烈建議在 15 分鐘之內完成碳基生命體食用程序，以獲得 100% 的高能肉汁暴擊。</dd>
+                            </dl>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <!-- 右側固定大圖：在手機版會自動轉為背景，大螢幕則滿版對齊右側 -->
+        <div class="row g-0">
+            <div class="col-md-5 position-absolute top-0 bottom-0 end-0 d-none d-md-block"
+                style="background-image: linear-gradient(to left, rgba(11,7,6,0.3),transparent), url(images/burger-21.jpg); background-size: cover; background-position: center center; z-index: 1;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 10 | 星際航線規劃（互動式地圖表單） -->
+    <section id="s10" class="py-5" style="background-color: #0b0706;">
+        <div class="container py-4">
+            <div class="row g-4 align-items-center">
+                <div class="map-wrapper p-2" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 12px; box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);">
+                    <iframe
+                    id="cyberMap"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14560.308352458655!2d120.6091776!3d24.1690291!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34693e048d342aa9%3A0x2b6f18a6783fa3b!2z5Yue5YuV6YOo5Yue5YuV5Yqb55m85bGV572y5Lit5b2w5oqV5YiG572y77yI6Ie65Lit6IG36KiT5bGA77yJ!5e0!3m2!1szh-TW!2stw!4v1782711333353!5m2!1szh-TW!2stw"
+                        width="100%" height="450" style="border:0; border-radius: 8px;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                </div>
+                </div>
+                <div class="col-md-6 text-light">
+                    <div class="ps-md-4">
+                        <span class="text-neon-cyan d-block mb-2 font-monospace">// NAVIGATION MODULE</span>
+                        <div class="h2 fw-bold text-light mb-4" id="formTitle">取餐星際航線規劃</div>
+                        <div class="mb-3 form-floating text-dark">
+                        <input type="text" class="form-control cyber-input" name="" id="explorerName" placeholder="請輸入姓名">
+                        <label for="explorerName">探險者姓名</label>
+                    </div>
+                    <div class="mb-3 form-floating text-dark">
+                        <input type="tel" class="form-control cyber-input" name="" id="explorerPhone" placeholder="請輸入電話">
+                        <label for="explorerPhone">聯絡通訊頻道 (電話)</label>
+                    </div>
+                    <div class="mb-3 form-floating text-dark">
+                        <input type="text" class="form-control cyber-input" name="" id="startAddress" placeholder="例如：台中火車站">
+                        <label for="startAddress">出發起點座標 (住址/地標)</label>
+                        <div class="form-text text-muted-glow mt-1 px-1" style="font-size: 0.8rem;">* 輸入出發地後點擊確認，左側將自動重組導航路徑。</div>
+                    </div>
+                    <div class="form-check mb-4 px-4">
+                        <input type="checkbox" class="form-check-input" name="" id="destinationCheck" checked disabled style="border-color: #00f0ff; background-color: #00f0ff;">
+                        <label for="destinationCheck" class="form-check-label text-neon-orange fw-bold">目的地固定：火星總部（西屯本店）</label>
+                    </div>
+                    <div class="d-flex gap-3">
+                       <button type="button" class="btn btn-cyber-secondary px-4 py-2" id="btnReset">重置重裝</button>
+                    <button type="button" class="btn btn-cyber-primary flex-glow-1 py-2" id="btnNavigate">啟動航線發射 <i class="fa-solid fa-location-arrow ms-1"></i></button> 
+                    </div>                    
+                    </div>                   
+                </div>
+            </div>
+        </div>        
+    </section>
+
+    <!-- Section 11  -->
+    <section id="s11">
+        <div class="row g-0">
+            <div class="col-md-6"
+                style="background-image: url(images/burger-23.jpg); background-position: center center; background-size: cover; min-height: 500px;">
+                <div class="row h-100 align-items-center m-0">
+                    <div class="col-md-9 p-5 s11-text ms-md-5">
+                        <span class="badge text-bg-danger mb-2">JOIN OUR MATRIX</span>
+                        <div class="h2 text-white font-sci mb-3">徵求：前線矩陣服務員</div>
+                        <p class="mb-2 text-warning-glow"><strong>工作內容:</strong></p>
+                        <ul class="text-white-50 ps-3 mb-3">
+                            <li>接待前來補給的星際指揮官，引導數位矩陣點餐。</li>
+                            <li>維持前線霓虹用餐區、補給艙流暢運作與環境整潔。</li>
+                            <li>具備高度危機處理能力，能冷靜應對客流尖峰的突發狀況。</li>
+                        </ul>
+                        <p class="mb-3 text-warning-glow"><strong>待遇:</strong> 月薪 38,000 - 45,000 碳點（外加深夜危險津貼與高額業績獎金）</p>
+                        <p class="cyber-p-sm">
+                            我們正在尋找充滿能量、熱愛未來科技氛圍的「前線接待者」！如果你具備流暢的溝通核心，能在高節奏的霓虹光影中保持微笑，歡迎加入我們的餐飲防線，與我們一同刷新這個城市的餐飲體驗。
+                        </p>
+                        <button class="btn btn-cyber-outline w-100 mt-4">投遞履歷 / 接入終端</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6"
+                style="background-image: url(images/burger-12.jpg); background-position: center center; background-size: cover;min-height: 500px;">
+                <div class="row h-100 align-items-center m-0">
+                    <div class="col-md-9 p-5 s11-text ms-md-5">
+                        <span class="badge text-bg-danger mb-2">JOIN OUR MATRIX</span>
+                        <div class="h2 text-white font-sci mb-3">徵求：風味核心研發廚師</div>
+                        <p class="mb-2 text-warning-glow"><strong>工作內容:</strong></p>
+                        <ul class="text-white-50 ps-3 mb-3">
+                            <li>掌控高溫能量爐，精準複製與研發賽博堡類等核心高能補給品。</li>
+                            <li>負責食材原物料控管、安全檢驗，確保每一份能源漢堡皆符合最高標準。</li>
+                            <li>與研發團隊協作，依據季節與星際流行趨勢開發限定全新風味。</li>
+                        </ul>
+                        <p class="mb-3 text-warning-glow"><strong>待遇:</strong> 月薪 45,000 - 58,000 碳點（依科技改裝經驗與廚藝年資加薪）</p>
+                        <p class="cyber-p-sm">
+                            廚房就是你的核心實驗室。我們需要對極致美味有偏執、能精準掌控火候與出餐速度的「風味工程師」。這裡提供最先進的烹飪設備與寬廣的發揮舞台，期待你用美食征服整座夜之城。
+                        </p>
+                        <button class="btn btn-cyber-outline w-100 mt-4">投遞履歷 / 接入終端</button>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+   <!-- Section 12 (Footer 頁尾) -->
+<footer id="s12" class="cyber-footer py-4 mt-5">
+    <div class="container">
+        <div class="row align-items-center gy-3">          
+            <div class="col-md-7 text-center text-md-start">
+                <p class="mb-0 footer-notice">
+                    <span class="cyber-tag-mini me-2">PROJECT</span> 
+                    Design by <span class="text-neon-pink fw-bold">Xocialphobia</span> | 本網站為專題作品，非實際營業單位
+                </p>
+                <small class="text-muted d-block mt-1">© 2026 CyberBurger. All Rights Reserved. 航線終端機系統</small>
+            </div>            
+            <div class="col-md-5">
+                <ul class="nav justify-content-center justify-content-md-end footer-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#s11">加入我們</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">隱私權政策</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#s01">
+                            <i class="bi bi-rocket-takeoff-fill me-1"></i>返回頂部
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/counterup2@2.0.2/dist/index.js">	</script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            // 註冊表單資料雙向綁定
+            regAccount: '',
+            regPassword: '',
+            regPasswordConfirm: '',
+            regEmail: '',
+            regAgree: false,
+
+            // 登入表單資料雙向綁定
+            loginAccount: '',
+            loginPassword: '',
+
+            // 會員狀態與訂單列表 (對應 HTML 的 userOrders)
+            currentUser: null,
+            userOrders: [] 
+        }
+    },
+
+    mounted() {
+       this.checkLogin();
+       
+    },
+
+    methods: {
+        // 1. 會員註冊
+        async handleRegister() {
+            // 前端基本表單驗證
+            if (!this.regAccount || !this.regPassword || !this.regEmail) {
+                alert('💥 傳輸失敗：請填寫完整註冊欄位！');
+                return;
+            }
+            if (this.regPassword !== this.regPasswordConfirm) {
+                alert('💥 存取金鑰不吻合：請確認兩次輸入的密碼相同！');
+                return;
+            }
+            if (!this.regAgree) {
+                alert('💥 協議拒絕：必須同意《星際通訊協議條款》方可加入！');
+                return;
+            }
+
+            try {
+                const res = await axios.post('http://localhost:3000/api/register', {
+                    username: this.regAccount,
+                    password: this.regPassword,
+                    email: this.regEmail
+                });
+
+                alert(res.data.message);
+
+                // 清空表單並關閉 Modal
+                this.regAccount = '';
+                this.regPassword = '';
+                this.regPasswordConfirm = '';
+                this.regEmail = '';
+                this.regAgree = false;
+
+                const modalEl = document.getElementById('registerModal');
+                const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                await this.handleLogin();
+
+            } catch (err) {
+                alert(err.response?.data?.message || '💥 矩陣連線失敗，註冊未完成');
+            }
+        },
+
+        // 2. 會員登入
+        async handleLogin() {
+            if (!this.loginAccount || !this.loginPassword) {
+                alert('💥 請輸入帳號與存取密碼！');
+                return;
+            }
+
+            try {
+                const res = await axios.post('http://localhost:3000/api/login', {
+                    account: this.loginAccount,
+                    password: this.loginPassword
+                });
+
+                // 儲存 Token 與 User 資訊
+                localStorage.setItem('mars_token', res.data.token);
+                localStorage.setItem('mars_user', JSON.stringify(res.data.user));
+                
+                this.currentUser = res.data.user;
+
+                alert('🚀 身份驗證通過，歡迎連接 MARS-NET！');
+
+                // 清空登入表單並關閉 Modal
+                this.loginAccount = '';
+                this.loginPassword = '';
+                const modalEl = document.getElementById('loginModal');
+                const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                modal.hide();
+
+                // 載入訂單紀錄
+                this.fetchUserOrders();
+
+            } catch (err) {
+                alert(err.response?.data?.message || '💥 驗證失敗：帳號或密碼錯誤');
+            }
+        },
+
+        // 3. 取得我的訂單
+        async fetchUserOrders() {
+            const token = localStorage.getItem('mars_token');
+            if (!token) return;
+
+            try {
+                const res = await axios.get('http://localhost:3000/api/user/ordermeal', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                // 賦值給 HTML 使用的 userOrders
+                this.userOrders = res.data.orders; 
+            } catch (err) {
+                console.error('拉取訂單歷史失敗', err);
+                if (err.response?.status === 401 || err.response?.status === 403) {
+                    this.handleLogout(); // Token 過期自動登出
+                }
+            }
+        },
+
+        // 4. 登出
+        handleLogout() {
+            localStorage.removeItem('mars_token');
+            localStorage.removeItem('mars_user');
+            this.currentUser = null;
+            this.userOrders = [];
+            alert('🛰️ 已斷開連線，安全安全返回地表！');
+        },
+        async checkLogin(){
+        const token=localStorage.getItem("mars_token");
+        if(!token) return;
+        try{
+            const res=await axios.get(
+                "http://localhost:3000/api/user/profile",
+                {
+                    headers:{
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            this.currentUser=res.data.user;
+            this.fetchUserOrders();
+        }catch{
+            this.handleLogout();
+        }
+       }
+    }
+}).mount('#app');
+        // ==================== 1. 數字跑馬燈計數器 (CounterUp) ====================
+        const counterUp = window.counterUp.default;
+
+        const callback = entries => {
+            entries.forEach(entry => {
+                const el = entry.target;
+                if (entry.isIntersecting && !el.classList.contains('is-visible')) {
+                    counterUp(el, {
+                        duration: 1000,
+                        delay: 16,
+                    });
+                    el.classList.add('is-visible');
+                }
+            });
+        }
+
+        const IO = new IntersectionObserver(callback, { threshold: 0.2 });
+        for (let i = 1; i <= 4; i++) {
+            const elTarget = document.querySelector(`.cyber-counter-number0${i}`);
+            if (elTarget){
+IO.observe(elTarget);
+            } 
+        }
+
+// ==================== 2. 互動式星際航線導覽表單 ====================
+        const btnNavigate = document.getElementById("btnNavigate");
+        document.addEventListener("DOMContentLoaded", function(){
+            const btnNavigate = document.getElementById("btnNavigate");
+            const btnReset = document.getElementById("btnReset");
+            const startAddressInput = document.getElementById("startAddress");
+            const explorerNameInput = document.getElementById("explorerName");
+            const formTitle = document.getElementById("formTitle");
+            const cyberMap = document.getElementById("cyberMap");
+
+            const targetAddress = "勞動部勞動力發展署中彰投分署";
+
+            const defaultMapUrl="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14560.308352458655!2d120.6091776!3d24.1690291!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34693e048d342aa9%3A0x2b6f18a6783fa3b!2z5Yue5YuV6YOo5Yue5YuV5Yqb55m85bGV572y5Lit5b2w5oqV5YiG572y77yI6Ie65Lit6IG36KiT5bGA77yJ!5e0!3m2!1szh-TW!2stw!4v1782711333353!5m2!1szh-TW!2stw";
+
+            btnNavigate.addEventListener("click", function(){
+                const startLoc = startAddressInput.value.trim();
+                const name = explorerNameInput.value.trim();
+
+                if (startLoc === ""){
+                    alert("💥 導航矩陣錯誤：請輸入您的『出發起點座標』以利規劃航線！");
+                    startAddressInput.focus();
+                    return;
+                }
+
+                if (name !==""){
+                    formTitle.innerHTML = `🚀 指揮官 <span class="text-neon-pink">${name}</span> 的專屬取餐航線`;
+                } else {
+                    formTitle.innerHTML = `🚀 專屬取餐航線已同步`;
+                }
+
+                const directionMapUrl= `https://www.google.com/maps?saddr=${encodeURIComponent(startLoc)}&daddr=${encodeURIComponent(targetAddress)}&output=embed`;
+
+                cyberMap.src = directionMapUrl;
+            });
+
+            btnReset.addEventListener("click", function(){
+                explorerNameInput.value ="";
+                const phoneInput = document.getElementById("explorerPhone");
+                if (phoneInput) phoneInput.value="";
+                
+                startAddressInput.value = "";
+                formTitle.innerText = "取餐星際航線規劃";
+                cyberMap.src = defaultMapUrl;
+            });
+        });
+
+    </script>
+</body>
+
+</html>

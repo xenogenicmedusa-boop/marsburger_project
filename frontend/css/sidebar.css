@@ -1,0 +1,62 @@
+body{
+  margin:0;
+  font-family: Arial;
+}
+
+/* 漢堡按鈕 */
+.menu-btn{
+  font-size:30px;
+  padding:10px;
+  cursor:pointer;
+  display:none;
+}
+
+/* 側邊欄 */
+.sidebar{
+  width:200px;
+  height:100%;
+  background:#333;
+  position:fixed;
+  left:0;
+  top:0;
+  padding-top:20px;
+}
+
+.sidebar a{
+  display:block;
+  color:white;
+  padding:12px;
+  text-decoration:none;
+}
+
+.sidebar a:hover{
+  background:#575757;
+}
+
+/* 主內容 */
+.main{
+  margin-left:200px;
+  padding:20px;
+}
+
+/* 手機版 */
+@media (max-width:768px){
+
+  .menu-btn{
+    display:block;
+  }
+
+  .sidebar{
+    left:-200px;
+    transition:0.3s;
+  }
+
+  .sidebar.show{
+    left:0;
+  }
+
+  .main{
+    margin-left:0;
+  }
+
+}

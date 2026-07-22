@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>火星漢堡研究所 - 賽博夕陽旗艦站</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* 您的 4 種核心基底顏色 */
+            --color-orange-main: #FF6A1C;  /* 強烈主橘 */
+            --color-yellow-bright: #FFDA62; /* 螢光明黃 */
+            --color-orange-pale: #FFAE56;   /* 柔和粉橘 */
+            --color-pink-neon: #F5788B;     /* 霓虹桃粉 */
+            
+            /* 互相配合的深底色與輔助科技色 */
+            --cyber-dark-bg: #1a0f0a;       /* 帶深橘暗基調的黑色 */
+            --cyber-dark-card: #2d1b13;     /* 卡片深色底 */
+            --cyber-text-light: #fff5f0;    /* 帶微溫的白色字 */
+            --font-sci: 'Orbitron', 'Noto Sans TC', sans-serif;
+        }
+
+        /* 基礎全域設定 */
+        body {
+            background-color: var(--cyber-dark-bg);
+            color: var(--cyber-text-light);
+            font-family: var(--font-sci);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 賽博霓虹發光字體 */
+        .cyber-glitch-title {
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--color-orange-main), 0 0 20px var(--color-pink-neon);
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .cyber-sub-title {
+            color: var(--color-yellow-bright);
+            text-shadow: 0 0 5px rgba(255, 218, 98, 0.6);
+        }
+
+        /* SECTION 1: 社群連結頂欄 */
+        .cyber-social-topbar {
+            background: linear-gradient(90deg, #24140d, #3d1f12);
+            border-bottom: 2px solid var(--color-orange-main);
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+        .cyber-social-topbar a {
+            color: var(--color-orange-pale);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .cyber-social-topbar a:hover {
+            color: var(--color-yellow-bright);
+            text-shadow: 0 0 8px var(--color-yellow-bright);
+        }
+
+        /* SECTION 2: 科技感導覽列 */
+        .cyber-navbar {
+            background: rgba(26, 15, 10, 0.85) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 106, 28, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1050;
+        }
+        .cyber-navbar .navbar-brand {
+            color: var(--color-orange-main) !important;
+            text-shadow: 0 0 5px rgba(255, 106, 28, 0.5);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .cyber-navbar .nav-link {
+            color: var(--cyber-text-light) !important;
+            margin: 0 5px;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .cyber-navbar .nav-link:hover, .cyber-navbar .nav-link.active {
+            color: var(--color-yellow-bright) !important;
+            border-bottom: 2px solid var(--color-yellow-bright);
+        }
+
+        /* SECTION 3: 能量核心幻燈片 */
+        .cyber-carousel .carousel-item {
+            height: 480px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .cyber-carousel .carousel-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(26,15,10,0.3), rgba(26,15,10,0.95));
+        }
+        .cyber-carousel .carousel-caption {
+            bottom: 15%;
+            background: rgba(45, 27, 19, 0.85);
+            border: 1px solid var(--color-pink-neon);
+            padding: 25px;
+            border-radius: 4px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(245, 120, 139, 0.3);
+        }
+
+        /* SECTION 4: 研究所核心橫幅 */
+        .cyber-hero {
+            background: linear-gradient(rgba(26, 15, 10, 0.8), rgba(26, 15, 10, 0.95)), 
+                        url('https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=1600&q=80'); /* 火星宇宙星空背景 */
+            background-size: cover;
+            background-position: center;
+            padding: 120px 0;
+            position: relative;
+            border-bottom: 1px dashed rgba(255, 106, 28, 0.3);
+        }
+
+        /* 高能雷射按鈕 */
+        .btn-cyber-laser {
+            background: transparent;
+            color: var(--color-yellow-bright);
+            border: 2px solid var(--color-orange-main);
+            font-weight: bold;
+            font-size: 1.25rem;
+            padding: 12px 40px;
+            border-radius: 0px;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 106, 28, 0.4);
+        }
+        .btn-cyber-laser:hover {
+            background: var(--color-orange-main);
+            color: var(--cyber-dark-bg);
+            box-shadow: 0 0 30px var(--color-orange-main), 0 0 10px var(--color-yellow-bright);
+            transform: scale(1.05);
+        }
+
+        /* SECTION 5: 核心指標區 */
+        .cyber-card-stat {
+            background: var(--cyber-dark-card);
+            border-left: 4px solid var(--color-pink-neon);
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* SECTION 6: 餐點卡片樣式 */
+        .cyber-meal-card {
+            background: var(--cyber-dark-card);
+            border: 1px solid rgba(255, 174, 86, 0.15);
+            border-radius: 0px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            overflow: hidden;
+            position: relative;
+        }
+        .cyber-meal-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--color-yellow-bright), transparent);
+            transform: scaleX(0);
+            transition: transform 0.5s ease;
+        }
+        .cyber-meal-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--color-orange-main);
+            box-shadow: 0 0 25px rgba(255, 106, 28, 0.3);
+        }
+        .cyber-meal-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .cyber-img-wrapper {
+            position: relative;
+            height: 240px;
+            overflow: hidden;
+            background: #110906;
+        }
+        .cyber-meal-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease, filter 0.5s ease;
+            filter: saturate(1.1) brightness(0.9);
+        }
+        .cyber-meal-card:hover .cyber-meal-img {
+            transform: scale(1.1);
+            filter: saturate(1.3) brightness(1.1);
+        }
+
+        .cyber-price {
+            color: var(--color-yellow-bright);
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 218, 98, 0.5);
+        }
+
+        /* SECTION 7: 特色區 */
+        .feature-box {
+            padding: 30px;
+            background: rgba(45, 27, 19, 0.6);
+            border: 1px solid rgba(255, 174, 86, 0.2);
+            transition: all 0.3s;
+            height: 100%;
+        }
+        .feature-box:hover {
+            border-color: var(--color-pink-neon);
+            background: rgba(45, 27, 19, 0.9);
+            box-shadow: 0 0 15px rgba(245, 120, 139, 0.2);
+        }
+
+        /* SECTION 8: 時間軸 */
+        .timeline-item {
+            padding-left: 30px;
+            border-left: 2px solid var(--color-orange-main);
+            position: relative;
+            margin-bottom: 25px;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -7px; top: 5px;
+            width: 12px; height: 12px;
+            background: var(--color-pink-neon);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--color-pink-neon);
+        }
+
+        /* SECTION 9: 顧客反饋背景 */
+        #sec-reviews {
+            background: linear-gradient(rgba(26, 15, 10, 0.9), rgba(26, 15, 10, 0.9)), 
+                        url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1000&q=80'); /* 霓虹遊戲控制感背景 */
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* SECTION 10: FAQ 手風琴 */
+        .accordion-item {
+            background-color: var(--cyber-dark-card) !important;
+            border: 1px solid rgba(255, 174, 86, 0.2) !important;
+            color: var(--cyber-text-light) !important;
+            margin-bottom: 10px;
+        }
+        .accordion-button {
+            background-color: var(--cyber-dark-card) !important;
+            color: var(--color-yellow-bright) !important;
+            font-weight: bold;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: rgba(255, 106, 28, 0.15) !important;
+            box-shadow: none !important;
+        }
+        .accordion-button::after {
+            filter: invert(0.7) sepia(1) saturate(3) hue-rotate(340deg);
+        }
+
+        /* SECTION 11: 聯絡控制台 */
+        .cyber-input {
+            background: #c0aea7 !important;
+            border: 1px solid rgba(255, 106, 28, 0.4) !important;
+            color: #f3f1f1 !important;
+            border-radius: 0px; 
+        }
+        .cyber-input:focus {
+            border-color: var(--color-pink-neon) !important;
+            box-shadow: 0 0 10px rgba(245, 120, 139, 0.5) !important;
+        }
+
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid rgba(255, 106, 28, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+
+        <div class="cyber-social-topbar" id="sec-social">
+            <div class="container d-flex justify-content-between align-items-center">
+                <div>
+                    <span style="color: var(--color-pink-neon);">[LAB STATUS: <span class="text-flash">OVERCLOCKED</span>]</span>
+                </div>
+                <div class="d-flex gap-3">
+                    <a href="marsburger_SPA.html">首頁</a>
+                    <a href="#discord-quantum">聯絡我們</a>
+                    <a href="#gal-meta">加入我們</a>
+                    <a href="#terminal">熱銷排行榜</a>
+                </div>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-dark cyber-navbar" id="sec-navbar">
+            <div class="container">
+                <a class="navbar-brand font-sci" href="#">🔥 MARS BURGER LAB</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#cyberNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="cyberNav">
+                    <ul class="navbar-nav ms-auto font-sci">
+                        <li class="nav-item"><a class="nav-link" href="#sec-hero">核心</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#sec-stats">數據</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#sec-menu">主打套餐</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#sec-features">技術</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#sec-timeline">歷程</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#sec-faq">問答</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#sec-contact">端點</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id="sec-carousel" class="carousel slide cyber-carousel" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#sec-carousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#sec-carousel" data-bs-slide-to="1"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" style="background-image: url(images/burger-29);">
+                    <div class="carousel-overlay"></div>
+                    <div class="carousel-caption text-start">
+                        <h3 style="color: var(--color-yellow-bright)">THERMAL BURGER CORE INITIATED</h3>
+                        <p>熱核風味傳送技術，突破大氣層的味覺衝擊。</p>
+                    </div>
+                </div>
+                <div class="carousel-item" style="background-image: url(images/burger-34.jpg);">
+                    <div class="carousel-overlay"></div>
+                    <div class="carousel-caption text-end">
+                        <h3 style="color: var(--color-pink-neon)">PINK NEON ENERGY FLUID</h3>
+                        <p>桃粉高能碳水化合物，為您的機械核心提供長效動力基礎。</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#sec-carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#sec-carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+
+        <header class="cyber-hero text-center" id="sec-hero">
+            <div class="container">
+                <div class="cyber-glitch-title display-4 mb-3">火星漢堡研究所</div>
+                <h1 class="lead fs-3 fw-bold mb-3 cyber-sub-title">// 高能熱核粒子與碳水化合物的重組矩陣</h1>
+                <p class="text-white-50 max-w-2xl mx-auto">
+                    我們在奧林帕斯山脈地下 3000 公尺處，運用強子對撞機重新解構大麥克。現點現做，跨星系光速傳送！
+                </p>
+                <div class="mt-5">
+                    <button class="btn btn-cyber-laser d-inline-flex align-items-center gap-3" @click="goToOrder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-cpu-fill" viewBox="0 0 16 16">
+                            <path d="M6.5 1a.5.5 0 0 0-.5.5V3h4V1.5a.5.5 0 0 0-.5-.5zM11 3.5v11h1.5a.5.5 0 0 0 .5-.5V4a.5.5 0 0 0-.5-.5zm-7 0A1.5 1.5 0 0 0 2.5 5v6A1.5 1.5 0 0 0 4 12.5h8a1.5 1.5 0 0 0 1.5-1.5V5A1.5 1.5 0 0 0 12 3.5zM4 5h8v6H4zM6 15v1.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5V15z"/>
+                        </svg>
+                        INITIATE SYSTEM ORDER // 立即初始化點餐
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <section class="container" id="sec-stats">
+            <div class="row g-4 text-center">
+                <div class="col-6 col-md-3">
+                    <div class="cyber-card-stat">
+                        <div class="h2 fw-bold" style="color: var(--color-orange-main)">1,420k +</div>
+                        <div class="small text-muted">BEAMED MEALS (已傳送餐點)</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="cyber-card-stat" style="border-left-color: var(--color-yellow-bright)">
+                        <div class="h2 fw-bold" style="color: var(--color-yellow-bright)">0.003s</div>
+                        <div class="small text-muted">HYPER-DELIVERY DEVIATION (傳送誤差)</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="cyber-card-stat" style="border-left-color: var(--color-orange-pale)">
+                        <div class="h2 fw-bold" style="color: var(--color-orange-pale)">99.8%</div>
+                        <div class="small text-muted">MARS COVERAGE (火星覆蓋率)</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="cyber-card-stat" style="border-left-color: var(--color-pink-neon)">
+                        <div class="h2 fw-bold" style="color: var(--color-pink-neon)">256-bit</div>
+                        <div class="small text-muted">FLAVOR ENCRYPTION (風味加密)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <main class="container py-5" id="sec-menu">
+            <div class="row mb-5">
+                <div class="col-12 text-center">
+                    <h2 class="fw-bold d-inline-block pb-2 cyber-glitch-title h3">⚡ 次世代主打高能能量模組</h2>
+                    <p class="text-muted mt-2">請選擇您要注入的卡路里代碼</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-4" v-for="meal in meals" :key="meal.id">
+                    <div class="card cyber-meal-card h-100 shadow">
+                        <div class="cyber-img-wrapper">
+                            <img :src="meal.image" :alt="meal.name" class="cyber-meal-img" onerror="this.src='https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80'">
+                            <div class="position-absolute top-0 start-0 p-2 small font-mono" style="color: var(--color-orange-pale); background: rgba(0,0,0,0.6);">ID: 00{{meal.id}}</div>
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-between p-4">
+                            <div>
+                                <h3 class="h5 card-title fw-bold text-white mb-2 font-sci">▶ {{ meal.name }}</h3>
+                                <p class="card-text text-secondary small mb-4" style="line-height:1.6;">{{ meal.description }}</p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center border-top border-secondary pt-3">
+                                <span class="badge font-sci" style="background-color: var(--color-pink-neon);">MODEL TYPE_X</span>
+                                <span class="cyber-price">${{ meal.price }} <span>Ξ</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <section class="container" id="sec-features">
+            <div class="row mb-4 text-center">
+                <h2 class="cyber-glitch-title h4">// SYSTEM INFRASTRUCTURE (系統基底)</h2>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-box text-center">
+                        <div class="h3 mb-2" style="color: var(--color-orange-main)">✦ 分子重組薯條</div>
+                        <p class="text-light small">所有薯條在進入包裝前，均經過熱核原子級別完美對齊，達到絕對酥脆。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box text-center">
+                        <div class="h3 mb-2" style="color: var(--color-pink-neon)">✦ 反重力可樂杯</div>
+                        <p class="text-light small">杯內內嵌微型反重力矩陣，保證在外太空運送或激烈重力跳轉中也絕不灑出半滴。</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box text-center">
+                        <div class="h3 mb-2" style="color: var(--color-yellow-bright)">✦ 高能強襲糖醋醬</div>
+                        <p class="text-light small">全新調配濃縮比例，沾取雞塊能釋放高達 500Gj 的美味源能。</p>
+                    </div>
+                </div>
+                <div class="mt-5 text-center">
+                    <button class="btn btn-cyber-laser d-inline-flex align-items-center gap-3" @click="goToOrder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-cpu-fill" viewBox="0 0 16 16">
+                            <path d="M6.5 1a.5.5 0 0 0-.5.5V3h4V1.5a.5.5 0 0 0-.5-.5zM11 3.5v11h1.5a.5.5 0 0 0 .5-.5V4a.5.5 0 0 0-.5-.5zm-7 0A1.5 1.5 0 0 0 2.5 5v6A1.5 1.5 0 0 0 4 12.5h8a1.5 1.5 0 0 0 1.5-1.5V5A1.5 1.5 0 0 0 12 3.5zM4 5h8v6H4zM6 15v1.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5V15z"/>
+                        </svg>
+                        INITIATE SYSTEM ORDER // 立即初始化點餐
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="sec-timeline">
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <h2 class="cyber-glitch-title h4 mb-4 text-center">⏱ EVOLUTION LOGS (研發日誌)</h2>
+                    <div class="timeline-item">
+                        <span class="font-sci fw-bold" style="color: var(--color-yellow-bright);">2026.03</span>
+                        <h4 class="h6 mt-1 text-white">啟動計畫：火星大氣層漢堡對流實驗成功。</h4>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="font-sci fw-bold" style="color: var(--color-orange-pale);">2026.05</span>
+                        <h4 class="h6 mt-1 text-white">熱能防漏可樂杯通過太空極限壓力測試。</h4>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="font-sci fw-bold" style="color: var(--color-pink-neon);">2026.06</span>
+                        <h4 class="h6 mt-1 text-white">全網頁升級為次世代 Cyber-Sunset 暖霓虹通訊協議（即本網頁）。</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container-fluid py-5" id="sec-reviews">
+            <div class="container">
+                <div class="row mb-4 text-center">
+                    <h2 class="cyber-sub-title h4">◀ USER CORE FEEDBACK (星際通訊評價) ▶</h2>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="p-4 border border-secondary" style="background: rgba(45, 27, 19, 0.85); backdrop-filter: blur(5px);">
+                            <p class="fst-italic text-white-50">「自從用了研究所的蟲洞外送，我在地球點餐，火星軌道上剛好拿到熱騰騰的麥香雞，太震撼了！」</p>
+                            <div class="font-sci small text-end" style="color: var(--color-orange-pale)">-- 賽博領航員 X-72</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-4 border border-secondary" style="background: rgba(45, 27, 19, 0.85); backdrop-filter: blur(5px);">
+                            <p class="fst-italic text-white-50">「重組大麥克裡蘊含的熱量足以驅動我的機械手臂運作48小時，推薦所有生化改造人購買。」</p>
+                            <div class="font-sci small text-end" style="color: var(--color-pink-neon)">-- 新東京反抗軍 零號</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="sec-faq">
+            <div class="row mb-4 text-center">
+                <h2 class="cyber-glitch-title h4">? FREQUENTLY ENCOUNTERED ERRORS (常見核心問答)</h2>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="accordion" id="cyberFaq">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    Q1: 量子傳送過來的薯條會變軟嗎？
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#cyberFaq">
+                                <div class="accordion-body text-white-50 small">
+                                    不會。傳送過程中使用靜態時間場（Time-stasis field）鎖定分子狀態，您收到的薯條體感時間與剛出油鍋完全一致。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    Q2: 接受虛擬貨幣或星際信用點支付嗎？
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#cyberFaq">
+                                <div class="accordion-body text-white-50 small">
+                                    我們支援火星信用點、乙太幣、生化晶片點數以及網頁底層的量子跳轉支付。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="sec-contact">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center">
+                    <h2 class="cyber-glitch-title h4 mb-4">✉ CONNECT TERMINAL (連通指揮部)</h2>
+                    <form @submit.prevent="alert('高能通訊訊號已發射！')">
+                        <div class="mb-3">
+                            <input type="text" class="form-control cyber-input" placeholder="請輸入您的星際通訊編碼 (Email)" required>
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control cyber-input" rows="3" placeholder="傳輸訊息加密包... (留言內容)" required></textarea>
+                        </div>
+                        <button type="submit" class="btn w-100 font-sci btn-sm" style="background-color: var(--color-orange-main); color: var(--cyber-dark-bg); font-weight: bold;">SEND DATA PACKET // 發送數據包</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center py-4 mt-5 border-top border-secondary bg-black" id="sec-footer">
+            <div class="container">
+                <div class="text-secondary small mb-2 font-mono">SYSTEM REV: 2.0.26 // DEPLOYED VIA SUNSET-NET</div>
+                <small class="text-muted font-sci">© 2026 MARS BURGER LABORATORY. ALL RIGHTS RESERVED BY CYBER-MCD.</small>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    meals: [
+                // === 1. 火星重力・手作牛肉堡系列 ===
+                {
+                    id: 1,
+                    name: "奧林帕斯火山牛肉堡",
+                    category: "beef",
+                    price: 240,
+                    image: "../images/beef_olympus.jpg", // 修正：直接使用路徑字串（或依據你的框架調整）
+                    description: "招牌必點！雙層4oz厚切純牛肉、特製微辣火星岩漿醬、切達起司、酥脆培根，終極極致能量首選。"
+                },
+                {
+                    id: 2,
+                    name: "好奇號經典起司堡",
+                    category: "beef",
+                    price: 165,
+                    image: "../images/beef_curiosity.jpg",
+                    description: "純粹美味。4oz厚切牛肉、雙倍炙燒起司、酸黃瓜、主廚特調漢堡醬。"
+                },
+                {
+                    id: 3,
+                    name: "火星沙塵暴花生培根堡",
+                    category: "beef",
+                    price: 185,
+                    image: "../images/beef_peanut.jpg",
+                    description: "濃郁爆發！帶顆粒香濃花生醬、脆培根、厚切牛肉，甜鹹交織的邪惡美味。"
+                },
+                {
+                    id: 4,
+                    name: "黑洞松露蕈菇牛肉堡",
+                    category: "beef",
+                    price: 210,
+                    image: "../images/beef_truffle.jpg",
+                    description: "奢華風味。濃郁黑松露醬、慢火炒香綜合蕈菇、4oz純牛肉、瑞士起司。"
+                },
+
+                // === 2. 星際風暴・雞肉與豬肉堡系列 ===
+                {
+                    id: 5,
+                    name: "赤色風暴流汁雞腿堡",
+                    category: "chicken_pork",
+                    price: 175,
+                    image: "../images/chicken_storm.jpg",
+                    description: "酥炸去骨雞腿排裹上特製美式酸辣醬，搭配爽脆生菜與香甜美乃滋，肉汁滿溢。"
+                },
+                {
+                    id: 6,
+                    name: "銀河蜂蜜芥末烤雞堡",
+                    category: "chicken_pork",
+                    price: 170,
+                    image: "../images/chicken_honey.jpg",
+                    description: "嫩煎在地去骨雞腿排、蜂蜜芥末醬、炙燒熔岩起司、新鮮番茄片。"
+                },
+                {
+                    id: 7,
+                    name: "隕石坑BBQ手撕豬肉堡",
+                    category: "chicken_pork",
+                    price: 180,
+                    image: "../images/pork_bbq.jpg",
+                    description: "低溫慢烤12小時豬肩肉，手撕淋上煙燻美式BBQ醬、搭配清新紫高麗菜酸甜沙拉。"
+                },
+                {
+                    id: 8,
+                    name: "基地經典雙層豬肉起司堡",
+                    category: "chicken_pork",
+                    price: 160,
+                    image: "../images/pork_classic.jpg",
+                    description: "台灣原產豬肉自製黃金比例肉餅、輕炙起司、焦糖炒洋蔥、莫斯特醬。"
+                },
+
+                // === 3. 生態艙・綠色蔬食漢堡（素食） ===
+                {
+                    id: 9,
+                    name: "宇宙綠洲植物肉培根堡",
+                    category: "veggie",
+                    price: 195,
+                    image: "../images/veggie_oasis.jpg",
+                    description: "未來植物肉排、植物培根、全素起司、新鮮萵苣、番茄、無蛋黃特調醬。"
+                },
+                {
+                    id: 10,
+                    name: "新星香酥鷹嘴豆餅堡",
+                    category: "veggie",
+                    price: 155,
+                    image: "../images/veggie_falafel.jpg",
+                    description: "中東風味手工鷹嘴豆餅（Falafel）、清爽小黃瓜優格醬、新鮮薄荷、番茄。"
+                },
+
+                // === 4. 推進器・火星炸雞與薯條點心 ===
+                {
+                    id: 11,
+                    name: "星際微脆多汁炸雞 (2塊)",
+                    category: "sides",
+                    price: 110,
+                    image: "../images/side_fried_chicken.jpg",
+                    description: "獨家香料醃製，皮薄酥脆、外酥內嫩，包含雞腿或雞塊。"
+                },
+                {
+                    id: 12,
+                    name: "火星研究員吮指雞柳條",
+                    category: "sides",
+                    price: 95,
+                    image: "../images/side_tenders.jpg",
+                    description: "手工去筋雞柳，附贈招牌火星岩漿醬、蜂蜜芥末醬、煙燻BBQ醬（三選一）。"
+                },
+                {
+                    id: 13,
+                    name: "超重力1/4吋細脆薯條",
+                    category: "sides",
+                    price: 55,
+                    image: "../images/side_fries.jpg",
+                    description: "金黃酥脆，經典原味灑上海鹽。可升級淋醬（+20 熔岩起司/黑松露）。"
+                },
+                {
+                    id: 14,
+                    name: "隕石松露起司薯球",
+                    category: "sides",
+                    price: 75,
+                    image: "../images/side_tater_tots.jpg",
+                    description: "外酥內綿密的現炸薯球，淋上奢華黑松露起司醬。"
+                },
+
+                // === 5. 液態能源・太空飲料 ===
+                {
+                    id: 15,
+                    name: "火星落日氣泡飲",
+                    category: "drinks",
+                    price: 65,
+                    image: "../images/drink_sunset.jpg",
+                    description: "招牌必喝！血橙與百香果特調氣泡蘇打，漸層如火星落日般迷人。"
+                },
+                {
+                    id: 16,
+                    name: "極光冷萃咖啡",
+                    category: "drinks",
+                    price: 80,
+                    image: "../images/drink_coffee.jpg",
+                    description: "16小時低溫慢速冷萃，帶有柑橘與巧克力尾韻，清爽解膩。"
+                },
+                {
+                    id: 17,
+                    name: "太空艙經典錫蘭紅茶",
+                    category: "drinks",
+                    price: 40,
+                    image: "../images/drink_tea.jpg",
+                    description: "微甜/無糖可選，茶香濃郁不澀口。"
+                },
+                {
+                    id: 18,
+                    name: "可口可樂",
+                    category: "drinks",
+                    price: 40,
+                    image: "../images/drink_soda.jpg",
+                    description: "吃漢堡不可或缺的經典氣泡快樂源泉。"
+                },
+                {
+                    id: 19,
+                    name: "雪碧",
+                    category: "drinks",
+                    price: 40,
+                    image: "../images/drink_sprite.jpg",
+                    description: "吃漢堡不可或缺的經典氣泡快樂源泉。"
+                },
+                // === 6. 火箭升空・超值套餐升級（可作加購項目或獨立餐點） ===
+                {
+                    id: 20,
+                    name: "A. 地球回憶套餐 (升級)",
+                    category: "combos",
+                    price: 79,
+                    image: "../images/combo_a.jpg",
+                    description: "【套餐優惠】超重力細脆薯條 (小) + $40 飲品任選。"
+                },
+                {
+                    id: 21,
+                    name: "B. 火星登陸套餐 (升級)",
+                    category: "combos",
+                    price: 99,
+                    image: "../images/combo_b.jpg",
+                    description: "【套餐優惠】星際多汁炸雞 (1塊) + $40 飲品任選。"
+                },
+                {
+                    id: 22,
+                    name: "C. 實驗室全能套餐 (升級)",
+                    category: "combos",
+                    price: 149,
+                    image: "../images/combo_c.jpg",
+                    description: "【大滿足】細脆薯條 (小) + 炸雞 (1塊) + $40 飲品任選。"
+                }
+            ]
+                }
+            },
+            methods: {
+                goToOrder() {
+                    alert("系統即將為您打開跳轉蟲洞，前往點餐控制台！");
+                    window.location.href = "marsburger_orderMeal.html";
+                }
+            }
+        }).mount("#app");
+    </script>
+</body>
+
+</html>

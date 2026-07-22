@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛸 火星漢堡研究所 - 多維度數據觀測終端</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --mars-red: #ff5722;
+            --mars-dark: #0f0c1b;
+            --neon-blue: #00f2fe;
+            --neon-green: #00ff87;
+            --neon-purple: #b92b27;
+            --cyber-yellow: #f1c40f;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1a153a 0%, var(--mars-dark) 100%);
+            color: #e0e0ff;
+            font-family: 'Noto Sans TC', 'Orbitron', sans-serif;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .cyber-title {
+            font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--mars-red), 0 0 20px rgba(255, 87, 34, 0.5);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            transition: border-color 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            border-color: rgba(0, 242, 254, 0.2);
+        }
+
+        .inner-chart-card {
+            background: rgba(15, 12, 27, 0.6) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05) !important;
+            border-radius: 12px !important;
+        }
+
+        .text-cyber-orange { color: #ff7675; }
+        .text-cyber-blue { color: #00f2fe; }
+        .text-cyber-green { color: #00ff87; }
+        .text-cyber-purple { color: #9b59b6; }
+
+        .btn-mars {
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        .btn-mars-warning { background-color: #e67e22; color: #fff; }
+        .btn-mars-warning:hover { box-shadow: 0 0 15px #e67e22; color: #fff; transform: translateY(-1px); }
+
+        .btn-mars-primary { background-color: #3498db; color: #fff; }
+        .btn-mars-primary:hover { box-shadow: 0 0 15px #3498db; color: #fff; transform: translateY(-1px); }
+
+        .btn-mars-success { background-color: #2ecc71; color: #fff; }
+        .btn-mars-success:hover { box-shadow: 0 0 15px #2ecc71; color: #fff; transform: translateY(-1px); }
+
+        .btn-mars-danger { background-color: #e74c3c; color: #fff; }
+        .btn-mars-danger:hover { box-shadow: 0 0 15px #e74c3c; color: #fff; transform: translateY(-1px); }
+
+        .btn-cyber-excel {
+            background: linear-gradient(135deg, #1f9d55 0%, #107c41 100%);
+            color: white;
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 0 15px rgba(16, 124, 65, 0.3);
+            font-family: 'Noto Sans TC';
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cyber-excel:hover {
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px var(--neon-green);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 260px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container pt-5">
+
+        <div class="row justify-content-center mb-5 align-items-center">
+            <div class="col-md-7 text-start">
+                <h1 class="cyber-title fw-bold display-5 mb-2">🛸 MARS BURGER LAB</h1>
+                <p class="text-muted small mb-0">火星漢堡研究所 · 核心多維度量子監測終端 v2.5</p>
+            </div>
+            <div class="col-md-5 text-md-end text-start mt-3 mt-md-0">
+                <button @click="downloadLiveExcel" class="btn btn-cyber-excel px-4 py-2 rounded-pill">
+                    📊 導出多維度星際 Excel 聯邦報表
+                </button>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-12 card p-4 glass-card">
+                <h5 class="fw-bold mb-4 text-warning" style="font-family: 'Orbitron';">🛠️ MISSION CONTROL TERMINAL (多維度數據注入器)</h5>
+
+                <div class="row g-5">
+                    
+                    <div class="col-12 col-xl-6">
+                        <div class="p-3 rounded inner-chart-card h-100">
+                            <h6 class="text-cyber-orange small fw-bold mb-3">📊 1. 訂單能級狀態 (Status Injector)</h6>
+                            <div class="row g-2 mb-4">
+                                <div class="col-6">
+                                    <button class="btn btn-mars btn-mars-warning w-100 py-2 small" @click="pendingCount++">
+                                        🍔 待注入 +1 <span class="badge bg-dark ms-1">{{ pendingCount }}</span>
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-mars btn-mars-primary w-100 py-2 small" @click="processingCount++">
+                                        🔥 聚合中 +1 <span class="badge bg-dark ms-1">{{ processingCount }}</span>
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-mars btn-mars-success w-100 py-2 small" @click="completedCount++">
+                                        🚀 已傳送 +1 <span class="badge bg-dark ms-1">{{ completedCount }}</span>
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-mars btn-mars-danger w-100 py-2 small" @click="cancelledCount++">
+                                        💥 已湮滅 +1 <span class="badge bg-dark ms-1">{{ cancelledCount }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chartStatus"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                        <div class="p-3 rounded inner-chart-card h-100">
+                            <h6 class="text-cyber-blue small fw-bold mb-3">🥩 2. 漢堡點餐種類 (selectedMeals 分析)</h6>
+                            <div class="row g-2 mb-4">
+                                <div class="col-6">
+                                    <button class="btn btn-mars btn-mars-primary w-100 py-2 small" @click="selectedMeals.beef++">
+                                        🌌 牛肉堡 +1 <span class="badge bg-dark ms-1">{{ selectedMeals.beef }}</span>
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-mars btn-mars-success w-100 py-2 small" @click="selectedMeals.chicken++">
+                                        ⚡ 雞肉堡 +1 <span class="badge bg-dark ms-1">{{ selectedMeals.chicken }}</span>
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-mars btn-mars-warning w-100 py-2 small" @click="selectedMeals.fish++">
+                                        🌊 魚肉堡 +1 <span class="badge bg-dark ms-1">{{ selectedMeals.fish }}</span>
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-mars btn-mars-danger w-100 py-2 small" @click="selectedMeals.veggie++">
+                                        🌱 蔬食堡 +1 <span class="badge bg-dark ms-1">{{ selectedMeals.veggie }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chartMeals"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                        <div class="p-3 rounded inner-chart-card h-100">
+                            <h6 class="text-cyber-green small fw-bold mb-3">💳 3. 結帳代幣協議 (payTypeCount 分析)</h6>
+                            <div class="row g-2 mb-4">
+                                <div class="col-4">
+                                    <button class="btn btn-mars btn-mars-success w-100 py-2 small px-1" @click="payTypeCount.crypto++">
+                                        🪙 星際幣 +1 <span class="badge bg-dark ms-1">{{ payTypeCount.crypto }}</span>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button class="btn btn-mars btn-mars-primary w-100 py-2 small px-1" @click="payTypeCount.credit++">
+                                        💳 銀河卡 +1 <span class="badge bg-dark ms-1">{{ payTypeCount.credit }}</span>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button class="btn btn-mars btn-mars-warning w-100 py-2 small px-1" @click="payTypeCount.cash++">
+                                        💵 宇宙現鈔 +1 <span class="badge bg-dark ms-1">{{ payTypeCount.cash }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chartPay"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                        <div class="p-3 rounded inner-chart-card h-100">
+                            <h6 class="text-cyber-purple small fw-bold mb-3">🛸 4. 傳輸取餐航線 (pickupTypeCount 分析)</h6>
+                            <div class="row g-2 mb-4">
+                                <div class="col-4">
+                                    <button class="btn btn-mars btn-mars-warning w-100 py-2 small px-1" @click="pickupTypeCount.drone++">
+                                        🤖 無人機 +1 <span class="badge bg-dark ms-1">{{ pickupTypeCount.drone }}</span>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button class="btn btn-mars btn-mars-success w-100 py-2 small px-1" @click="pickupTypeCount.teleport++">
+                                        🌀 傳送門 +1 <span class="badge bg-dark ms-1">{{ pickupTypeCount.teleport }}</span>
+                                    </button>
+                                </div>
+                                <div class="col-4">
+                                    <button class="btn btn-mars btn-mars-primary w-100 py-2 small px-1" @click="pickupTypeCount.self++">
+                                        🚀 基地自取 +1 <span class="badge bg-dark ms-1">{{ pickupTypeCount.self }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chartPickup"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    orders: [],
+                    pendingCount: 5,
+                    processingCount: 12,
+                    completedCount: 24,
+                    cancelledCount: 3,
+                    
+                    selectedMeals: {
+                        beef: 15,
+                        chicken: 10,
+                        fish: 8,
+                        veggie: 4
+                    },
+                    payTypeCount: {
+                        crypto: 20,
+                        credit: 12,
+                        cash: 5
+                    },
+                    pickupTypeCount: {
+                        drone: 18,
+                        teleport: 14,
+                        self: 5
+                    },
+
+                    // 儲存四個獨立的 Chart 實例
+                    instanceStatus: null,
+                    instanceMeals: null,
+                    instancePay: null,
+                    instancePickup: null
+                }
+            },
+            computed: {
+                // 1. 訂單狀態陣列
+                dataStatus() {
+                    if (this.orders && this.orders.length > 0) {
+                        const pending = this.orders.filter(o => o.status === '待處理' || o.status === '待注入').length;
+                        const processing = this.orders.filter(o => o.status === '製作中' || o.status === '聚合中').length;
+                        const completed = this.orders.filter(o => o.status === '已完成' || o.status === '已傳送').length;
+                        const cancelled = this.orders.filter(o => o.status === '已取消' || o.status === '已湮滅').length;
+                        return [pending, processing, completed, cancelled];
+                    }
+                    return [this.pendingCount, this.processingCount, this.completedCount, this.cancelledCount];
+                },
+                // 2. 漢堡種類陣列
+                dataMeals() {
+                    return [this.selectedMeals.beef, this.selectedMeals.chicken, this.selectedMeals.fish, this.selectedMeals.veggie];
+                },
+                // 3. 支付協議陣列
+                dataPay() {
+                    return [this.payTypeCount.crypto, this.payTypeCount.credit, this.payTypeCount.cash];
+                },
+                // 4. 取餐航線陣列
+                dataPickup() {
+                    return [this.pickupTypeCount.drone, this.pickupTypeCount.teleport, this.pickupTypeCount.self];
+                }
+            },
+            mounted() {
+                this.initCharts();
+                this.getOrders();
+            },
+            methods: {
+                getOrders() {
+                    const vm = this;
+                    axios.get('http://localhost:3000/api/orders')
+                        .then(function (response) {
+                            vm.orders = response.data;
+                        })
+                        .catch(function (error) {
+                            console.log("聯邦網路未連線，啟動本地銀河模擬數據。");
+                        });
+                },
+                initCharts() {
+                    const textStyle = {
+                        color: '#a0a0d0',
+                        font: { family: 'Orbitron, Noto Sans TC', size: 11 }
+                    };
+
+                    const commonOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { labels: textStyle } },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: textStyle },
+                            x: { grid: { display: false }, ticks: textStyle }
+                        }
+                    };
+
+                    // 圖表 1：訂單狀態 (長條圖)
+                    this.instanceStatus = new Chart(document.getElementById('chartStatus'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['待注入', '聚合中', '已傳送', '已湮滅'],
+                            datasets: [{
+                                label: '量子訂單能級',
+                                data: this.dataStatus,
+                                backgroundColor: ['rgba(230, 126, 34, 0.4)', 'rgba(52, 152, 219, 0.4)', 'rgba(46, 204, 113, 0.4)', 'rgba(231, 76, 60, 0.4)'],
+                                borderColor: ['#e67e22', '#3498db', '#2ecc71', '#e74c3c'],
+                                borderWidth: 1.5
+                            }]
+                        },
+                        options: commonOptions
+                    });
+
+                    // 圖表 2：漢堡種類 (雷達圖/極坐標圖比圓餅圖更有科技感)
+                    this.instanceMeals = new Chart(document.getElementById('chartMeals'), {
+                        type: 'polarArea',
+                        data: {
+                            labels: ['熔岩牛肉堡', '脈衝雞肉堡', '星海深海魚堡', '生態未來蔬食'],
+                            datasets: [{
+                                data: this.dataMeals,
+                                backgroundColor: ['rgba(52, 152, 219, 0.4)', 'rgba(46, 204, 113, 0.4)', 'rgba(241, 196, 15, 0.4)', 'rgba(231, 76, 60, 0.4)'],
+                                borderColor: '#0f0c1b',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { position: 'right', labels: textStyle } },
+                            scales: { r: { grid: { color: 'rgba(255,255,255,0.08)' }, angleLines: { color: 'rgba(255,255,255,0.08)' }, ticks: { display: false } } }
+                        }
+                    });
+
+                    // 圖表 3：結帳代幣 (折線圖)
+                    this.instancePay = new Chart(document.getElementById('chartPay'), {
+                        type: 'line',
+                        data: {
+                            labels: ['星際幣', '銀河卡', '宇宙現鈔'],
+                            datasets: [{
+                                label: '協議支付分佈',
+                                data: this.dataPay,
+                                borderColor: '#00ff87',
+                                backgroundColor: 'rgba(0, 255, 135, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.3
+                            }]
+                        },
+                        options: commonOptions
+                    });
+
+                    // 圖表 4：取餐航線 (圓餅圖)
+                    this.instancePickup = new Chart(document.getElementById('chartPickup'), {
+                        type: 'pie',
+                        data: {
+                            labels: ['無人機配送', '量子傳送', '基地自取'],
+                            datasets: [{
+                                data: this.dataPickup,
+                                backgroundColor: ['rgba(241, 196, 15, 0.5)', 'rgba(155, 89, 182, 0.5)', 'rgba(52, 152, 219, 0.5)'],
+                                borderColor: '#0f0c1b',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { position: 'right', labels: textStyle } }
+                        }
+                    });
+                },
+                downloadLiveExcel() {
+                    const wb = XLSX.utils.book_new();
+
+                    // Sheet 1: 訂單能級
+                    const s1Data = [
+                        ["量子訂單狀態", "即時波能小計 (組)"],
+                        ["待注入 (Pending)", this.pendingCount],
+                        ["聚合中 (Processing)", this.processingCount],
+                        ["已傳送 (Completed)", this.completedCount],
+                        ["已湮滅 (Cancelled)", this.cancelledCount]
+                    ];
+                    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(s1Data), "訂單能級狀態");
+
+                    // Sheet 2: 漢堡物料
+                    const s2Data = [
+                        ["漢堡點餐種類", "即時消耗量 (份)"],
+                        ["🌌 熔岩巨星牛肉堡", this.selectedMeals.beef],
+                        ["⚡ 脈衝極光流汁雞堡", this.selectedMeals.chicken],
+                        ["🌊 星海裂變深海魚堡", this.selectedMeals.fish],
+                        ["🌱 生態艙未來蔬食堡", this.selectedMeals.veggie]
+                    ];
+                    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(s2Data), "漢堡點餐種類");
+
+                    // Sheet 3: 支付與取餐協議
+                    const s3Data = [
+                        ["維度指標類別", "核心計量指標", "即時數值"],
+                        ["結帳代幣協議", "🪙 星際幣 (Crypto)", this.payTypeCount.crypto],
+                        ["結帳代幣協議", "💳 銀河卡 (Credit)", this.payTypeCount.credit],
+                        ["結帳代幣協議", "💵 宇宙現鈔 (Cash)", this.payTypeCount.cash],
+                        ["傳輸取餐航線", "🤖 無人機 (Drone)", this.pickupTypeCount.drone],
+                        ["傳輸取餐航線", "🌀 量子傳送 (Teleport)", this.pickupTypeCount.teleport],
+                        ["傳輸取餐航線", "🚀 基地自取 (Self)", this.pickupTypeCount.self],
+                    ];
+                    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(s3Data), "傳輸與支付協議");
+
+                    XLSX.writeFile(wb, "mars_burger_multidim_report.xlsx");
+                }
+            },
+            watch: {
+                // 精確監聽各個陣列，資料異動時即時單獨 update 對應的 Chart 實例
+                dataStatus(nv) { if(this.instanceStatus) { this.instanceStatus.data.datasets[0].data = nv; this.instanceStatus.update(); } },
+                dataMeals(nv) { if(this.instanceMeals) { this.instanceMeals.data.datasets[0].data = nv; this.instanceMeals.update(); } },
+                dataPay(nv) { if(this.instancePay) { this.instancePay.data.datasets[0].data = nv; this.instancePay.update(); } },
+                dataPickup(nv) { if(this.instancePickup) { this.instancePickup.data.datasets[0].data = nv; this.instancePickup.update(); } }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

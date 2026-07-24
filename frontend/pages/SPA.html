@@ -425,12 +425,12 @@ body {
 
 @media (max-width: 767.98px) {
     #s07 {
-        background-image: linear-gradient(rgba(11, 7, 6, 0.92), rgba(11, 7, 6, 0.92)), url('images/burger-16.jpg') !important;
+        background-image: linear-gradient(rgba(11, 7, 6, 0.92), rgba(11, 7, 6, 0.92)), url('../images/burger-16.jpg') !important;
         background-size: cover; background-position: center;
     }
     .s07-text, .s09-text { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
     #s09 {
-        background-image: linear-gradient(rgba(11,7,6,0.95), rgba(11,7,6,0.94)), url(images/burger-21.jpg) !important;
+        background-image: linear-gradient(rgba(11,7,6,0.95), rgba(11,7,6,0.94)), url(../images/burger-21.jpg) !important;
         background-size: cover; background-position: center;
     }
     .cyber-faq-list dt { border-left: none; border-bottom: 1px solid rgba(255, 107, 53, 0.2); padding-left: 0; padding-bottom: 4px; }
@@ -445,9 +445,6 @@ body {
 </head>
 
 <body>
-    <div id="app">
-
-    
     <!-- Section 1| 社群連結 -->
     <section class="cyber-social-topbar" id="s01">
         <div class="container">
@@ -485,72 +482,37 @@ body {
                         <a href="#s04" class="nav-link"><i class="fa-solid fa-book-open me-1"></i>品牌故事</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#s05" class="nav-link"><i class="fa-solid fa-burger me-1"></i>點餐流程</a>
+                        <a href="#s06" class="nav-link"><i class="fa-solid fa-burger me-1"></i>人氣餐點</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#s06" class="nav-link"><i class="fa-solid fa-champagne-glasses me-1"></i>資源特色</a>
+                        <a href="#s07" class="nav-link"><i class="fa-solid fa-champagne-glasses me-1"></i>主廚推薦</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#s07" class="nav-link"><i class="fa-solid fa-tags me-1"></i>會員專屬</a>
+                        <a href="#s08" class="nav-link"><i class="fa-solid fa-tags me-1"></i>限時優惠</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#s08" class="nav-link"><i class="fa-solid fa-star me-1"
-                                style="color: var(--color-yellow-bright)"></i>能力升級</a>
+                        <a href="#s09" class="nav-link"><i class="fa-solid fa-star me-1"
+                                style="color: var(--color-yellow-bright)"></i>顧客評價</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#s09" class="nav-link"><i class="fa-solid fa-location-dot me-1"></i>常見問答</a>
+                        <a href="#s10" class="nav-link"><i class="fa-solid fa-location-dot me-1"></i>門市資訊</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#s11" class="nav-link"><i class="fa-solid fa-envelope me-1"></i>門市資訊</a>
+                        <a href="#s11" class="nav-link"><i class="fa-solid fa-envelope me-1"></i>聯絡我們</a>
                     </li>
                     <li class="nav-item">
-                        <a href="marsburger_orderMeal.html" class="nav-link"
-                            style="color: var(--color-orange-main)"><i
+                        <a href="20260525-orderMeal.html" class="nav-link"
+                            style="color: var(--color-orange-main) !important; fw-bold;"><i
                                 class="fa-solid fa-cart-shopping me-1"></i>立即點餐</a>
                     </li>
                 </ul>
 
-                <!-- 頂部導覽列：動態切換登入/會員狀態 -->
-<div class="d-flex gap-2">
-    <!-- 未登入狀態 -->
-    <template v-if="!currentUser">
-        <button class="btn btn-cyber-outline btn-sm px-3" data-bs-toggle="modal" data-bs-target="#loginModal">登入</button>
-        <button class="btn btn-cyber-orange btn-sm px-3" data-bs-toggle="modal" data-bs-target="#registerModal">註冊</button>
-    </template>
-
-    <!-- 已登入狀態 -->
-    <template v-else>
-        <span class="text-warning align-self-center">歡迎，太空人 {{ currentUser.username }}</span>
-        <button class="btn btn-outline-danger btn-sm" @click="handleLogout">登出</button>
-    </template>
-</div>
-
-<!-- 會員專屬訂單顯示區域 (僅登入後顯示) -->
-<div class="container mt-4" v-if="currentUser">
-    <h3 class="text-warning"><i class="fa-solid fa-list-check me-2"></i>星際傳送紀錄 // 我的訂單</h3>
-    
-    <div class="table-responsive mt-3" v-if="userOrders.length > 0">
-        <table class="table table-dark table-striped">
-            <thead>
-                <tr>
-                    <th>訂單編號</th>
-                    <th>下單時間</th>
-                    <th>金額</th>
-                    <th>傳送狀態</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="order in userOrders" :key="order.id">
-                    <td>{{ order.order_number }}</td>
-                    <td>{{ order.created_at }}</td>
-                    <td>${{ order.total_amount }}</td>
-                    <td><span class="badge bg-info">{{ order.status }}</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div v-else class="text-white-50">尚無傳送紀錄，快去點一份奧林帕斯火山牛肉堡吧！</div>
-</div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-cyber-outline btn-sm px-3" data-bs-toggle="modal"
+                        data-bs-target="#loginModal"><i class="fa-solid fa-arrow-right-to-bracket me-1"></i>登入</button>
+                    <button class="btn btn-cyber-orange btn-sm px-3" data-bs-toggle="modal"
+                        data-bs-target="#registerModal"><i class="fa-solid fa-user-plus me-1"></i>註冊</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -601,40 +563,43 @@ body {
                         </div>
 
                         <div class="col-6 ps-4 border-start border-secondary border-opacity-25">
-    <div class="mb-3">
-        <label for="regAccount" class="form-label"><i class="fa-solid fa-terminal me-2"></i>星際登入帳號</label>
-        <!-- 加上 v-model="regAccount" -->
-        <input type="text" id="regAccount" v-model="regAccount" class="form-control" placeholder="請設定 6-20 位英數字編碼">
-    </div>
-    <div class="mb-3">
-        <label for="regPassword" class="form-label"><i class="fa-solid fa-key me-2"></i>核心存取密碼</label>
-        <!-- 加上 v-model="regPassword" -->
-        <input type="password" id="regPassword" v-model="regPassword" class="form-control" placeholder="請輸入高強度密碼">
-    </div>
-    <div class="mb-3">
-        <label for="regPasswordConfirm" class="form-label"><i class="fa-solid fa-shield-halved me-2"></i>確認存取密碼</label>
-        <!-- 加上 v-model="regPasswordConfirm" -->
-        <input type="password" id="regPasswordConfirm" v-model="regPasswordConfirm" class="form-control" placeholder="請再次輸入密碼以驗證">
-    </div>
-    <div class="mb-3">
-        <label for="regEmail" class="form-label"><i class="fa-solid fa-envelope me-2"></i>地球通訊編碼 (Email)</label>
-        <!-- 加上 v-model="regEmail" -->
-        <input type="email" id="regEmail" v-model="regEmail" class="form-control" placeholder="name@mars-net.com">
-    </div>
-    <div class="mb-3 pt-2">
-        <!-- 加上 v-model="regAgree" -->
-        <input type="checkbox" id="regAgree" v-model="regAgree" class="form-check-input me-2">
-        <label for="regAgree" class="form-check-label text-white-50 small">我已詳細閱讀並同意遵守上述所有星際通訊協議條款</label>
-    </div>
-</div>
+                            <div class="mb-3">
+                                <label for="regAccount" class="form-label"><i
+                                        class="fa-solid fa-terminal me-2"></i>星際登入帳號</label>
+                                <input type="text" id="regAccount" class="form-control" placeholder="請設定 6-20 位英數字編碼">
+                            </div>
+                            <div class="mb-3">
+                                <label for="regPassword" class="form-label"><i
+                                        class="fa-solid fa-key me-2"></i>核心存取密碼</label>
+                                <input type="password" id="regPassword" class="form-control" placeholder="請輸入高強度密碼">
+                            </div>
+                            <div class="mb-3">
+                                <label for="regPasswordConfirm" class="form-label"><i
+                                        class="fa-solid fa-shield-halved me-2"></i>確認存取密碼</label>
+                                <input type="password" id="regPasswordConfirm" class="form-control"
+                                    placeholder="請再次輸入密碼以驗證">
+                            </div>
+                            <div class="mb-3">
+                                <label for="regEmail" class="form-label"><i class="fa-solid fa-envelope me-2"></i>地球通訊編碼
+                                    (Email)</label>
+                                <input type="email" id="regEmail" class="form-control" placeholder="name@mars-net.com">
+                            </div>
+                            <div class="mb-3 pt-2">
+                                <input type="checkbox" id="regAgree" class="form-check-input me-2">
+                                <label for="regAgree"
+                                    class="form-check-label text-white-50 small">我已詳細閱讀並同意遵守上述所有星際通訊協議條款</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-<div class="modal-footer px-4 py-3 bg-black bg-opacity-25">
-    <button type="button" class="btn btn-outline-secondary font-sci px-4 text-white" data-bs-dismiss="modal" style="border-radius: 0px;">ABORT // 取消</button>
-    <!-- 加上 @click="handleRegister" -->
-    <button type="button" class="btn btn-cyber-orange font-sci px-4" @click="handleRegister" style="border-radius: 0px;">
-        <i class="fa-solid fa-user-plus me-2"></i>REGISTER // 確認註冊
-    </button>
-</div>
+                <div class="modal-footer px-4 py-3 bg-black bg-opacity-25">
+                    <button type="button" class="btn btn-outline-secondary font-sci px-4 text-white"
+                        data-bs-dismiss="modal" style="border-radius: 0px;">ABORT // 取消</button>
+                    <button type="button" class="btn btn-cyber-orange font-sci px-4" style="border-radius: 0px;">
+                        <i class="fa-solid fa-user-plus me-2"></i>REGISTER // 確認註冊
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -651,30 +616,41 @@ body {
                 </div>
 
                 <div class="modal-body p-4">
-    <div class="mb-3">
-        <label for="loginAccount" class="form-label"><i class="fa-solid fa-terminal me-2"></i>星際通訊帳號 / Email</label>
-        <!-- 加上 v-model="loginAccount" -->
-        <input type="text" id="loginAccount" v-model="loginAccount" class="form-control" placeholder="請輸入註冊的帳號編碼">
-    </div>
+                    <div class="mb-3">
+                        <label for="loginAccount" class="form-label"><i class="fa-solid fa-terminal me-2"></i>星際通訊帳號 /
+                            Email</label>
+                        <input type="text" id="loginAccount" class="form-control" placeholder="請輸入註冊的帳號編碼">
+                    </div>
 
-    <div class="mb-3">
-        <label for="loginPassword" class="form-label"><i class="fa-solid fa-key me-2"></i>存取密碼金鑰</label>
-        <!-- 加上 v-model="loginPassword" -->
-        <input type="password" id="loginPassword" v-model="loginPassword" class="form-control" placeholder="請輸入密碼">
-    </div>
-    
-    <!-- ... 中間保持不變 ... -->
-</div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label"><i class="fa-solid fa-key me-2"></i>存取密碼金鑰</label>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="請輸入密碼">
+                    </div>
 
-<div class="modal-footer px-4 py-3 bg-black bg-opacity-25">
-    <button type="button" class="btn btn-outline-secondary text-white font-sci px-3" data-bs-dismiss="modal" style="border-radius: 0px;">
-        ABORT // 關閉
-    </button>
-    <!-- 加上 @click="handleLogin" -->
-    <button type="button" class="btn btn-cyber-submit font-sci px-4" @click="handleLogin">
-        <i class="fa-solid fa-unlock-keyhole me-2"></i>ACCESS // 驗證登入
-    </button>
-</div>
+                    <div class="d-flex justify-content-between align-items-center pt-1 mb-2">
+                        <div class="form-check">
+                            <input type="checkbox" id="rememberMe" class="form-check-input">
+                            <label for="rememberMe" class="form-check-label text-white-50 small">保持安全連線 (記住我)</label>
+                        </div>
+                        <div>
+                            <a href="#forgot" class="small text-decoration-none"
+                                style="color: #FFAE56; transition: 0.3s;" onmouseover="this.style.color='#FFDA62'"
+                                onmouseout="this.style.color='#FFAE56'">
+                                <i class="fa-solid fa-circle-question me-1"></i>忘記驗證金鑰？
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer px-4 py-3 bg-black bg-opacity-25">
+                    <button type="button" class="btn btn-outline-secondary text-white font-sci px-3"
+                        data-bs-dismiss="modal" style="border-radius: 0px;">
+                        ABORT // 關閉
+                    </button>
+                    <button type="button" class="btn btn-cyber-submit font-sci px-4">
+                        <i class="fa-solid fa-unlock-keyhole me-2"></i>ACCESS // 驗證登入
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -692,7 +668,7 @@ body {
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item active"
-                    style="background-image: url(images/burger-1.jpg); height: 90vh; background-position: center center; background-size: cover;">
+                    style="background-image: url(../images/burger-1.jpg); height: 90vh; background-position: center center; background-size: cover;">
                     <div class="carousel-caption d-flex flex-column justify-content-center h-100">
                         <span class="cyber-badge-sm">// CORE ENERGY: OVERCLOCKED MODULE //</span>
                         <h5>熱核重組大麥克</h5>
@@ -700,7 +676,7 @@ body {
                     </div>
                 </div>
                 <div class="carousel-item"
-                    style="background-image: url(images/burger-2.jpg); height: 90vh; background-position: center center; background-size: cover;">
+                    style="background-image: url(../images/burger-2.jpg); height: 90vh; background-position: center center; background-size: cover;">
                     <div class="carousel-caption d-flex flex-column justify-content-center h-100">
                         <span class="cyber-badge-sm">// VELOCITY QUANTUM: GOLDEN CRISP //</span>
                         <h5>高頻震盪麥脆鷄</h5>
@@ -708,7 +684,7 @@ body {
                     </div>
                 </div>
                 <div class="carousel-item"
-                    style="background-image: url(images/burger-3.jpg); height: 90vh; background-position: center center; background-size: cover;">
+                    style="background-image: url(../images/burger-3.jpg); height: 90vh; background-position: center center; background-size: cover;">
                     <div class="carousel-caption d-flex flex-column justify-content-center h-100">
                         <span class="cyber-badge-sm">// TELEPORTATION: ZERO-G FLAVOR //</span>
                         <h5>量子蟲洞光速傳送</h5>
@@ -733,7 +709,7 @@ body {
     <section id="s04" class="container-fluid p-0" style="background-color: #0b0706;">
         <div class="row g-0">
             <div class="col-md-5 cyber-story-img"
-                style="background-image: url(images/burger-4.jpg); background-position: center center; background-size: cover;">
+                style="background-image: url(../images/burger-4.jpg); background-position: center center; background-size: cover;">
             </div>
             <div class="col-md-7 py-5 px-4 px-lg-5 d-flex flex-column justify-content-center text-center">
                 <div class=" display-5 fw-bolder cyber-story-title text-light mb-1">西元2026年<br><span
@@ -796,7 +772,7 @@ body {
     </section>
     <!-- Section 5| 時間軸排版 點餐順序 -->
     <section id="s05" class="py-5"
-        style="background-image: linear-gradient(rgba(17,12,10,0.85), rgba(17,12,10,0.85)), url(images/burger-5.jpg); background-position: center center; background-size: cover; background-attachment: fixed;">
+        style="background-image: linear-gradient(rgba(17,12,10,0.85), rgba(17,12,10,0.85)), url(../images/burger-5.jpg); background-position: center center; background-size: cover; background-attachment: fixed;">
         <div class="container">
             <!-- 標題美化，改為火星霓虹感橘紅 -->
             <div class="display-3 fw-bolder py-5 text-center text-uppercase tracking-wider"
@@ -812,7 +788,7 @@ body {
                         </div>
                     </div>
                     <div class="col-md-6 mt-3 ps-md-5">
-                        <div class="s05-img" style="background-image: url(images/burger-10.jpg);"></div>
+                        <div class="s05-img wow animate__fadeInRight" data-wow-duration="3s" data-wow-delay="0s" data-wow-iteration="1" style="background-image: url(../images/burger-10.jpg);"></div>
                     </div>
                 </div>
                 <!-- 步驟 2 -->
@@ -825,7 +801,7 @@ body {
                         </div>
                     </div>
                     <div class="col-md-6 mt-3 pe-md-5">
-                        <div class="s05-img" style="background-image: url(images/burger-20.jpg);"></div>
+                        <div class="s05-img wow animate__fadeInLeft" data-wow-duration="3s" data-wow-delay="0s" data-wow-iteration="1" style="background-image: url(../images/burger-20.jpg);"></div>
                     </div>
                 </div>
                 <!-- 步驟 3 -->
@@ -838,7 +814,7 @@ body {
                         </div>
                     </div>
                     <div class="col-md-6 mt-3 ps-md-5">
-                        <div class="s05-img" style="background-image: url(images/burger-19.jpg);"></div>
+                        <div class="s05-img wow animate__fadeInRight" data-wow-duration="3s" data-wow-delay="0s" data-wow-iteration="1" style="background-image: url(../images/burger-19.jpg);"></div>
                     </div>
                 </div>
                 <!-- 步驟 4 -->
@@ -851,7 +827,7 @@ body {
                         </div>
                     </div>
                     <div class="col-md-6 mt-3 pe-md-5">
-                        <div class="s05-img" style="background-image: url(images/burger-22.jpg);"></div>
+                        <div class="s05-img wow animate__fadeInLeft" data-wow-duration="3s" data-wow-delay="0s" data-wow-iteration="1" style="background-image: url(../images/burger-22.jpg);"></div>
                     </div>
                 </div>
                 <!-- 步驟 5 -->
@@ -864,7 +840,7 @@ body {
                         </div>
                     </div>
                     <div class="col-md-6 mt-3 ps-md-5">
-                        <div class="s05-img" style="background-image: url(images/burger-9.jpg);"></div>
+                        <div class="s05-img wow animate__fadeInRight" data-wow-duration="3s" data-wow-delay="0s" data-wow-iteration="1" style="background-image: url(../images/burger-9.jpg);"></div>
                     </div>
                 </div>
             </div>
@@ -909,7 +885,7 @@ body {
         <div class="row g-0">
             <!-- 左側固定大圖：在手機版會自動隱藏或依比例顯示，大螢幕則完美滿版 -->
             <div class="col-md-5 position-absolute top-0 bottom-0 start-0 d-none d-md-block"
-                style="background-image:linear-gradient(to right, transparent, rgba(11,7,6,0.3)), url(images/burger-16.jpg); background-position: center center; background-size: cover;z-index: 1;">
+                style="background-image:linear-gradient(to right, transparent, rgba(11,7,6,0.3)), url(../images/burger-16.jpg); background-position: center center; background-size: cover;z-index: 1;">
             </div>
         </div>
         <div class="container position-relative" style="z-index: 2;">
@@ -1050,7 +1026,7 @@ body {
         <!-- 右側固定大圖：在手機版會自動轉為背景，大螢幕則滿版對齊右側 -->
         <div class="row g-0">
             <div class="col-md-5 position-absolute top-0 bottom-0 end-0 d-none d-md-block"
-                style="background-image: linear-gradient(to left, rgba(11,7,6,0.3),transparent), url(images/burger-21.jpg); background-size: cover; background-position: center center; z-index: 1;">
+                style="background-image: linear-gradient(to left, rgba(11,7,6,0.3),transparent), url(../images/burger-21.jpg); background-size: cover; background-position: center center; z-index: 1;">
             </div>
         </div>
     </section>
@@ -1102,7 +1078,7 @@ body {
     <section id="s11">
         <div class="row g-0">
             <div class="col-md-6"
-                style="background-image: url(images/burger-23.jpg); background-position: center center; background-size: cover; min-height: 500px;">
+                style="background-image: url(../images/burger-23.jpg); background-position: center center; background-size: cover; min-height: 500px;">
                 <div class="row h-100 align-items-center m-0">
                     <div class="col-md-9 p-5 s11-text ms-md-5">
                         <span class="badge text-bg-danger mb-2">JOIN OUR MATRIX</span>
@@ -1122,7 +1098,7 @@ body {
                 </div>
             </div>
             <div class="col-md-6"
-                style="background-image: url(images/burger-12.jpg); background-position: center center; background-size: cover;min-height: 500px;">
+                style="background-image: url(../images/burger-12.jpg); background-position: center center; background-size: cover;min-height: 500px;">
                 <div class="row h-100 align-items-center m-0">
                     <div class="col-md-9 p-5 s11-text ms-md-5">
                         <span class="badge text-bg-danger mb-2">JOIN OUR MATRIX</span>
@@ -1143,7 +1119,7 @@ body {
             </div>
         </div>
     </section>
-</div>
+
    <!-- Section 12 (Footer 頁尾) -->
 <footer id="s12" class="cyber-footer py-4 mt-5">
     <div class="container">
@@ -1173,59 +1149,79 @@ body {
         </div>
     </div>
 </footer>
-</div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/counterup2@2.0.2/dist/index.js">	</script>
-    <script src="../js/axios.min.js"></script>
-    <script src="../js/sweetalert2@11.js"></script>
-    <script src="../js/vue.global.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/order.js"></script>
-    <script src="../js/app.js"></script>
     <script>
-const { createApp } = Vue;
+        // ==================== 1. 數字跑馬燈計數器 (CounterUp) ====================
+        const counterUp = window.counterUp.default;
 
-createApp({
-    data() {
-        return {
-            // 註冊表單資料雙向綁定
-            regAccount: '',
-            regPassword: '',
-            regPasswordConfirm: '',
-            regEmail: '',
-            regAgree: false,
-
-            // 登入表單資料雙向綁定
-            loginAccount: '',
-            loginPassword: '',
-
-            // 會員狀態與訂單列表 (對應 HTML 的 userOrders)
-            currentUser: null,
-            userOrders: [] 
+        const callback = entries => {
+            entries.forEach(entry => {
+                const el = entry.target;
+                if (entry.isIntersecting && !el.classList.contains('is-visible')) {
+                    counterUp(el, {
+                        duration: 1000,
+                        delay: 16,
+                    });
+                    el.classList.add('is-visible');
+                }
+            });
         }
-    },
-mounted() {
-    Auth.checkLogin(this);
-},
 
-methods: {
+        const IO = new IntersectionObserver(callback, { threshold: 0.2 });
+        for (let i = 1; i <= 4; i++) {
+            const elTarget = document.querySelector(`.cyber-counter-number0${i}`);
+            if (elTarget){
+IO.observe(elTarget);
+            } 
+        }
 
-    handleRegister() {
-        Auth.register(this);
-    },
+// ==================== 2. 互動式星際航線導覽表單 ====================
+        const btnNavigate = document.getElementById("btnNavigate");
+        document.addEventListener("DOMContentLoaded", function(){
+            const btnNavigate = document.getElementById("btnNavigate");
+            const btnReset = document.getElementById("btnReset");
+            const startAddressInput = document.getElementById("startAddress");
+            const explorerNameInput = document.getElementById("explorerName");
+            const formTitle = document.getElementById("formTitle");
+            const cyberMap = document.getElementById("cyberMap");
 
-    handleLogin() {
-        Auth.login(this);
-    },
+            const targetAddress = "勞動部勞動力發展署中彰投分署";
 
-    handleLogout() {
-        Auth.logout(this);
-    }
+            const defaultMapUrl="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14560.308352458655!2d120.6091776!3d24.1690291!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34693e048d342aa9%3A0x2b6f18a6783fa3b!2z5Yue5YuV6YOo5Yue5YuV5Yqb55m85bGV572y5Lit5b2w5oqV5YiG572y77yI6Ie65Lit6IG36KiT5bGA77yJ!5e0!3m2!1szh-TW!2stw!4v1782711333353!5m2!1szh-TW!2stw";
 
-}
-});
-    
+            btnNavigate.addEventListener("click", function(){
+                const startLoc = startAddressInput.value.trim();
+                const name = explorerNameInput.value.trim();
+
+                if (startLoc === ""){
+                    alert("💥 導航矩陣錯誤：請輸入您的『出發起點座標』以利規劃航線！");
+                    startAddressInput.focus();
+                    return;
+                }
+
+                if (name !==""){
+                    formTitle.innerHTML = `🚀 指揮官 <span class="text-neon-pink">${name}</span> 的專屬取餐航線`;
+                } else {
+                    formTitle.innerHTML = `🚀 專屬取餐航線已同步`;
+                }
+
+                const directionMapUrl= `https://www.google.com/maps?saddr=${encodeURIComponent(startLoc)}&daddr=${encodeURIComponent(targetAddress)}&output=embed`;
+
+                cyberMap.src = directionMapUrl;
+            });
+
+            btnReset.addEventListener("click", function(){
+                explorerNameInput.value ="";
+                const phoneInput = document.getElementById("explorerPhone");
+                if (phoneInput) phoneInput.value="";
+                
+                startAddressInput.value = "";
+                formTitle.innerText = "取餐星際航線規劃";
+                cyberMap.src = defaultMapUrl;
+            });
+        });
 
     </script>
 </body>

@@ -1,29 +1,17 @@
-require("dotenv").config();
-
-const express=require("express");
-
-const cors=require("cors");
-
-const path=require("path");
-
-const app=express();
-
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const app = express();
 app.use(cors());
-
-app.use(express.json());
-
-app.use(express.static(path.join(__dirname,"..")));
-
-app.use("/api",require("./routes/auth"));
-
-app.use("/api/orders",require("./routes/orders"));
-
-app.use("/api/user",require("./routes/users"));
-
-const PORT=process.env.PORT||3000;
-
-app.listen(PORT,()=>{
-
-    console.log(`🚀 Server Running http://localhost:${PORT}`);
-
-});
+app.use(express.json({ limit: '1mb' }));
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
+app.use('/api', require('./routes/auth'));
+app.use('/api/user', require('./routes/users'));
+app.use('/api/orders', require('./routes/orders'));
+app.use('/api/dashboard', require('./routes/dashboard'));
+app.get('/api/health', (_req, res) => res.json({ ok: true }));
+app.get('/', (_req, res) => res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html')));
+app.use((error, _req, res, _next) => { console.error(error); res.status(500).json({ message: '伺服器發生錯誤，請稍後再試。' }); });
+const port = Number(process.env.PORT || 3000);
+app.listen(port, () => console.log(`MarsBurger running at http://localhost:${port}`));

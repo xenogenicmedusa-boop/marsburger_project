@@ -3,70 +3,36 @@ const path = require('path');
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-async function migrateOrders(connection) {
-    const [columns] = await connection.query('SHOW COLUMNS FROM orders');
-    const columnNames = new Set(columns.map((column) => column.Field));
-    const additions = [
-        ['customer_name', "VARCHAR(100) NOT NULL DEFAULT '舊版訂單'"],
-        ['customer_count', 'TINYINT UNSIGNED NOT NULL DEFAULT 1'],
-        ['memo', "VARCHAR(255) NOT NULL DEFAULT ''"],
-        ['meals', 'JSON NULL'],
-        ['pay_type', "VARCHAR(50) NOT NULL DEFAULT '未指定'"],
-        ['pickup_type', "VARCHAR(50) NOT NULL DEFAULT '未指定'"],
-        ['selected_count', 'SMALLINT UNSIGNED NOT NULL DEFAULT 0']
-    ];
-
-    for (const [name, definition] of additions) {
-        if (!columnNames.has(name)) {
-            await connection.query(`ALTER TABLE orders ADD COLUMN \`${name}\` ${definition}`);
-        }
+async function main() {
+  const database = process.env.DB_NAME || 'mars_lab_db';
+  if (!/^[A-Za-z0-9_]+$/.test(database)) throw new Error('DB_NAME 僅能使用英數字與底線。');
+  const connection = await mysql.createConnection({
+    host: process.env.DB_HOST || 'localhost', port: Number(process.env.DB_PORT || 3306),
+    user: process.env.DB_USER || 'root', password: process.env.DB_PASSWORD || '', multipleStatements: true
+  });
+  try {
+    const sql = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8').replaceAll('mars_lab_db', database);
+    await connection.query(sql);
+    // Upgrade installations created by an older project version.
+    const [columns] = await connection.query(`SHOW COLUMNS FROM \`${database}\`.users`);
+    if (!columns.some(c => c.Field === 'role')) await connection.query(`ALTER TABLE \`${database}\`.users ADD role ENUM('customer','admin') NOT NULL DEFAULT 'customer'`);
+    const [orderColumns] = await connection.query(`SHOW COLUMNS FROM \`${database}\`.orders`);
+    const orderFields = new Set(orderColumns.map(column => column.Field));
+    if (orderFields.has('items')) {
+      await connection.query(`UPDATE \`${database}\`.orders SET meals=items WHERE meals IS NULL`);
+      await connection.query(`ALTER TABLE \`${database}\`.orders DROP COLUMN items`);
     }
-
-    if (columnNames.has('items')) {
-        await connection.query('UPDATE orders SET meals = items WHERE meals IS NULL');
+    if (!orderFields.has('updated_at')) await connection.query(`ALTER TABLE \`${database}\`.orders ADD updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`);
+    await connection.query(`UPDATE \`${database}\`.orders SET status='pending' WHERE status IN ('PENDING', '待處理')`);
+    await connection.query(`UPDATE \`${database}\`.orders SET status='processing' WHERE status IN ('PROCESSING', '製作中')`);
+    await connection.query(`UPDATE \`${database}\`.orders SET status='completed' WHERE status IN ('COMPLETED', '已完成')`);
+    await connection.query(`UPDATE \`${database}\`.orders SET status='cancelled' WHERE status IN ('CANCELLED', '已取消')`);
+    if (process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
+      const bcrypt = require('bcrypt');
+      const [existing] = await connection.query(`SELECT id FROM \`${database}\`.users WHERE email=?`, [process.env.ADMIN_EMAIL]);
+      if (!existing.length) await connection.query(`INSERT INTO \`${database}\`.users (username,email,password,role) VALUES (?,?,?,'admin')`, [process.env.ADMIN_USERNAME || 'admin', process.env.ADMIN_EMAIL, await bcrypt.hash(process.env.ADMIN_PASSWORD, 12)]);
     }
-    await connection.query("UPDATE orders SET status = '待處理' WHERE status = 'PENDING'");
-
-    const [foreignKeys] = await connection.query(
-        `SELECT CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE
-         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'orders'
-           AND COLUMN_NAME = 'user_id' AND REFERENCED_TABLE_NAME IS NOT NULL`
-    );
-    for (const { CONSTRAINT_NAME: name } of foreignKeys) {
-        await connection.query(`ALTER TABLE orders DROP FOREIGN KEY \`${name}\``);
-    }
-    // Keep the legacy signed INT type so it remains compatible with an existing users.id column.
-    await connection.query('ALTER TABLE orders MODIFY user_id INT NULL');
-    await connection.query(
-        'ALTER TABLE orders ADD CONSTRAINT fk_orders_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL'
-    );
+    console.log(`資料庫 ${database} 已就緒。`);
+  } finally { await connection.end(); }
 }
-
-async function initialiseDatabase() {
-    const connection = await mysql.createConnection({
-        host: process.env.DB_HOST || 'localhost',
-        port: Number(process.env.DB_PORT || 3306),
-        user: process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD || '',
-        multipleStatements: true
-    });
-
-    try {
-        const database = process.env.DB_NAME || 'mars_lab_db';
-        if (!/^[A-Za-z0-9_]+$/.test(database)) {
-            throw new Error('DB_NAME 只能包含英文字母、數字與底線');
-        }
-        const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8')
-            .replaceAll('mars_lab_db', database);
-        await connection.query(schema);
-        await migrateOrders(connection);
-        console.log(`資料庫 ${process.env.DB_NAME || 'mars_lab_db'} 已初始化。`);
-    } finally {
-        await connection.end();
-    }
-}
-
-initialiseDatabase().catch((error) => {
-    console.error('資料庫初始化失敗:', error.message);
-    process.exitCode = 1;
-});
+main().catch(error => { console.error(`初始化失敗：${error.code || error.name} ${error.message || '未知錯誤'}`); process.exitCode = 1; });

@@ -1,19 +1,10 @@
-const express=require("express");
-
-const router=express.Router();
-
-const controller=require("../controllers/orderController");
-
-const auth=require("../middleware/auth");
-
-router.get("/",controller.getOrders);
-
-router.post("/",controller.createOrder);
-
-router.patch("/:id",controller.updateOrder);
-
-router.delete("/:id",controller.deleteOrder);
-
-router.get("/user",auth,controller.getUserOrders);
-
-module.exports=router;
+const router = require('express').Router();
+const controller = require('../controllers/orderController');
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
+router.post('/', auth.optional, controller.createOrder);
+router.get('/mine', auth, controller.getUserOrders);
+router.get('/', auth, admin, controller.getOrders);
+router.patch('/:id', auth, admin, controller.updateOrder);
+router.delete('/:id', auth, admin, controller.deleteOrder);
+module.exports = router;

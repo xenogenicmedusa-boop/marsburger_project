@@ -102,3 +102,41 @@ marsburger_project/
    ├─ controllers/               # Auth、訂單、會員、Dashboard 邏輯
    └─ routes/                    # API 路由
 ```
+
+## 分支總覽與細節
+
+本專案採用功能分支逐步整合前台、訂單與文件內容；目前分支關係如下。
+
+```text
+main
+ └─ js4 / SPAtoINDEX / registerlaw
+     └─ orderinfo
+         └─ readme（目前分支）
+```
+
+| 分支 | 基準／目前狀態 | 主要內容 | 說明 |
+| --- | --- | --- | --- |
+| `main` | 專案基準分支 | 初始專案結構 | 作為原始穩定基礎。 |
+| `js4` | 與 `SPAtoINDEX`、`registerlaw` 指向同一提交 | 前端 SPA、會員與 API 整合基礎 | 三個分支目前為同一版本節點，可視為不同功能命名的共用快照。 |
+| `SPAtoINDEX` | 同 `js4` | SPA 視覺與首頁整合 | 將品牌展示／SPA 版面延伸至首頁整合方向。 |
+| `registerlaw` | 同 `js4` | 會員註冊與協議流程基礎 | 為會員條款與註冊流程相關工作節點。 |
+| `orderinfo` | 建立於 `js4` 後 | 訂單資訊與配送資料 | 新增／調整訂單控制器、資料庫初始化、首頁購物車與地址／電話資料流程。 |
+| `readme` | 建立於 `orderinfo` 後，目前工作分支 | 文件與後台入口整理 | 擴充 README，並補強後台回首頁導覽與專案使用說明。 |
+
+### 分支使用建議
+
+- 日常展示與交付：使用 `readme` 分支。
+- 若要檢視最初專案：切換至 `main`。
+- 若要追蹤訂單資料欄位與前台購物車調整：比較 `js4` 與 `orderinfo`。
+- 若要保留功能命名紀錄：`SPAtoINDEX`、`registerlaw` 可作為 `js4` 的標記分支；它們目前沒有額外差異。
+
+```powershell
+# 查看分支
+git branch -a
+
+# 切換至文件整合版本
+git switch readme
+
+# 比較訂單功能差異
+git diff js4..orderinfo
+```

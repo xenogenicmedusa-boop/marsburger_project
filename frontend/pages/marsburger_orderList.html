@@ -18,6 +18,7 @@
   <section class="login-panel card p-4" id="loginPanel"><h1 class="h4 mb-3">管理員登入</h1><p class="text-secondary small">請以管理員帳號登入後台。</p><form id="loginForm"><input name="account" class="form-control mb-2" placeholder="帳號或 Email" required><input name="password" type="password" class="form-control mb-3" placeholder="密碼" required><button class="btn btn-warning w-100">登入後台</button><p class="small text-danger mt-3 mb-0" id="loginError"></p></form></section>
   <script>
     const API = `${location.protocol}//${location.hostname || 'localhost'}:3000/api`;
+    document.querySelector('.navbar .container').insertAdjacentHTML('beforeend', '<a href="../index.html" class="btn btn-sm btn-outline-warning ms-2">回首頁</a>');
     const statusNames = {pending:'待處理',processing:'製作中',completed:'已完成',cancelled:'已取消'};
     const token = () => localStorage.getItem('mars_token');
     const user = () => JSON.parse(localStorage.getItem('mars_user') || 'null');

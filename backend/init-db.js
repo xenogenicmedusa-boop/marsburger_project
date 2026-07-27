@@ -23,6 +23,8 @@ async function main() {
       await connection.query(`ALTER TABLE \`${database}\`.orders DROP COLUMN items`);
     }
     if (!orderFields.has('updated_at')) await connection.query(`ALTER TABLE \`${database}\`.orders ADD updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`);
+    if (!orderFields.has('phone')) await connection.query(`ALTER TABLE \`${database}\`.orders ADD phone VARCHAR(30) NOT NULL DEFAULT '' AFTER customer_name`);
+    if (!orderFields.has('delivery_address')) await connection.query(`ALTER TABLE \`${database}\`.orders ADD delivery_address VARCHAR(255) NULL AFTER pickup_type`);
     await connection.query(`UPDATE \`${database}\`.orders SET status='pending' WHERE status IN ('PENDING', '待處理')`);
     await connection.query(`UPDATE \`${database}\`.orders SET status='processing' WHERE status IN ('PROCESSING', '製作中')`);
     await connection.query(`UPDATE \`${database}\`.orders SET status='completed' WHERE status IN ('COMPLETED', '已完成')`);

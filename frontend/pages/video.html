@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="zh-Hant"><head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260727-05-609cca1"}');</script><script src="/_sdk/728f18890c0241e5.telemetry_sdk.js" integrity="sha512-cMy0xd29wRWs8nyV19fws/+pwQ0u98A3fewCalZ/OWXQXUwzmcx7jKUuZ511uTJlUe1gP0Undii48zuekOylMw=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MarsBurger｜Cinematic Reel</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Eczar:wght@600;700;800&amp;family=Raleway:wght@400;500;600;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ember: #ff4b22;
+      --gold: #ffc35b;
+      --cream: #fff3df;
+      --ink: #06040b;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--ink); }
+    body {
+      width: 100%;
+      min-height: calc(100 * min(var(--vh, 1vh), 1vh));
+      margin: 0;
+      overflow: hidden;
+      background: var(--ink);
+      color: var(--cream);
+      font-family: "Raleway", sans-serif;
+    }
+
+    button { font: inherit; }
+    button:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 3px;
+    }
+
+    .reel-shell {
+      position: relative;
+      width: 100%;
+      min-height: calc(100 * min(var(--vh, 1vh), 1vh));
+      overflow: hidden;
+      isolation: isolate;
+      background: radial-gradient(circle at 72% 20%, #3e1110 0%, #06040b 48%, #020104 100%);
+    }
+
+    .reel-shell::before,
+    .reel-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .reel-shell::before {
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.62), transparent 26%, transparent 75%, rgba(0,0,0,.5)),
+        linear-gradient(0deg, rgba(4,1,7,.92), transparent 34%, rgba(4,1,7,.34));
+    }
+
+    .reel-shell::after {
+      opacity: .16;
+      background-image: repeating-linear-gradient(0deg, rgba(255,255,255,.15) 0 1px, transparent 1px 4px);
+      mix-blend-mode: overlay;
+    }
+
+    .stars {
+      position: absolute;
+      inset: -20%;
+      z-index: 1;
+      opacity: .58;
+      background-image:
+        radial-gradient(circle at 10% 13%, #fff 0 1px, transparent 1.8px),
+        radial-gradient(circle at 25% 74%, #ffcc84 0 1px, transparent 1.6px),
+        radial-gradient(circle at 46% 29%, #fff 0 1.2px, transparent 1.8px),
+        radial-gradient(circle at 65% 17%, #fff 0 .8px, transparent 1.5px),
+        radial-gradient(circle at 83% 54%, #ffc77e 0 1px, transparent 1.7px);
+      background-size: 230px 250px, 390px 340px, 510px 370px, 300px 290px, 440px 450px;
+      animation: drift-stars 18s linear infinite;
+    }
+
+    .scene-stage {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
+
+    .reel-scene {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.035);
+      transition: opacity .8s ease, transform 1.25s cubic-bezier(.16,.84,.24,1), visibility .8s step-end;
+    }
+
+    .reel-scene.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+      transition: opacity .8s ease, transform 6s ease-out, visibility 0s;
+    }
+
+    .scene-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.18) contrast(1.12) brightness(.61);
+      transform: scale(1.06);
+      transition: transform 6s ease-out, filter .8s ease;
+    }
+
+    .reel-scene.active .scene-image {
+      transform: scale(1.15);
+      filter: saturate(1.28) contrast(1.15) brightness(.72);
+    }
+
+    .scene-tint {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 73% 38%, rgba(255,82,26,.28), transparent 29%),
+        linear-gradient(104deg, rgba(4,1,8,.87) 4%, rgba(8,1,7,.52) 47%, rgba(85,8,5,.22) 100%);
+    }
+
+    .scene-content {
+      position: relative;
+      z-index: 6;
+      width: min(690px, 88vw);
+      margin-left: clamp(1.4rem, 8vw, 9rem);
+      margin-top: 5rem;
+      padding-bottom: 7rem;
+      text-shadow: 0 3px 24px rgba(0,0,0,.8);
+    }
+
+    .scene-index {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1rem;
+      color: var(--gold);
+      font-family: "Space Mono", monospace;
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+    }
+
+    .scene-index::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: var(--gold);
+      box-shadow: 0 0 10px var(--gold);
+    }
+
+    .scene-heading {
+      max-width: 12ch;
+      margin: 0;
+      font-family: "Eczar", serif;
+      font-size: clamp(2.55rem, 6vw, 5.8rem);
+      line-height: .96;
+      letter-spacing: -.055em;
+      text-wrap: balance;
+    }
+
+    .scene-copy {
+      max-width: 43ch;
+      margin: 1.1rem 0 0;
+      color: rgba(255,241,226,.84);
+      font-size: clamp(.9rem, 1.4vw, 1.08rem);
+      line-height: 1.7;
+    }
+
+    .end-mark {
+      display: none;
+      width: fit-content;
+      margin-top: 1.6rem;
+      padding: .7rem 1rem;
+      border: 1px solid rgba(255,202,112,.64);
+      background: rgba(48,5,7,.54);
+      color: var(--gold);
+      font-family: "Space Mono", monospace;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+    }
+
+    .scene-nine.active .end-mark { display: block; }
+
+    .top-hud,
+    .bottom-hud {
+      position: absolute;
+      z-index: 30;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: clamp(1.1rem, 3vw, 2.5rem);
+    }
+
+    .top-hud { top: 0; align-items: flex-start; }
+    .bottom-hud { bottom: 0; align-items: flex-end; }
+
+    .brand-lockup {
+      padding: .8rem 1rem;
+      border: 1px solid rgba(255,210,149,.28);
+      background: rgba(7,3,10,.48);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-label {
+      margin: 0;
+      color: var(--gold);
+      font-family: "Eczar", serif;
+      font-size: 1.65rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -.06em;
+      text-shadow: 0 0 18px rgba(255,183,71,.65);
+    }
+
+    .brand-subtitle {
+      margin: .28rem 0 0;
+      color: rgba(255,229,191,.72);
+      font-family: "Space Mono", monospace;
+      font-size: .56rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+    }
+
+    .sequence-panel {
+      min-width: 132px;
+      padding: .75rem .85rem;
+      border-left: 1px solid rgba(255,205,146,.4);
+      background: linear-gradient(90deg, transparent, rgba(10,3,10,.52));
+      text-align: right;
+    }
+
+    .sequence-label,
+    .sequence-value {
+      margin: 0;
+      font-family: "Space Mono", monospace;
+    }
+
+    .sequence-label {
+      color: rgba(255,204,139,.72);
+      font-size: .58rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+    }
+
+    .sequence-value {
+      margin-top: .3rem;
+      color: var(--cream);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+    }
+
+    .control-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      min-height: 44px;
+      border: 1px solid rgba(255,213,157,.3);
+      border-radius: 999px;
+      background: rgba(9,5,12,.58);
+      color: var(--cream);
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: transform .2s ease, background .2s ease, opacity .2s ease;
+    }
+
+    .control-button:hover { transform: translateY(-2px); background: rgba(86,14,10,.78); }
+    .control-button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+    .play-button {
+      min-width: 116px;
+      gap: .48rem;
+      padding: 0 .95rem;
+      border-color: rgba(255,191,105,.66);
+      background: linear-gradient(135deg, #e53a1e, #8f0d11);
+      font-weight: 800;
+      box-shadow: 0 8px 28px rgba(201,37,20,.35);
+    }
+
+    .play-button:hover { background: linear-gradient(135deg, #fa5730, #a31315); }
+
+    .timeline-panel { width: min(43vw, 370px); }
+    .timeline-bar {
+      display: flex;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .timeline-step {
+      flex: 1;
+      height: 3px;
+      border: 0;
+      padding: 0;
+      background: rgba(255,237,211,.25);
+      cursor: pointer;
+      transition: background .25s ease, transform .25s ease;
+    }
+
+    .timeline-step:hover { transform: scaleY(1.8); }
+    .timeline-step.visited,
+    .timeline-step.current {
+      background: linear-gradient(90deg, var(--ember), var(--gold));
+      box-shadow: 0 0 10px rgba(255,75,34,.72);
+    }
+
+    .timeline-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-top: .58rem;
+      color: rgba(255,235,205,.8);
+      font-family: "Space Mono", monospace;
+      font-size: .63rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+    }
+
+    .reel-shell.is-paused .scene-image { animation-play-state: paused; }
+    .reel-shell.is-paused .pause-icon { display: none; }
+    .reel-shell:not(.is-paused) .resume-icon { display: none; }
+
+    @keyframes drift-stars {
+      from { transform: translate3d(0,0,0) scale(1); }
+      to { transform: translate3d(-3%,2%,0) scale(1.08); }
+    }
+
+    @media (max-width: 640px) {
+      .scene-content {
+        width: calc(100% - 2.5rem);
+        margin: 4.6rem 1.25rem 0;
+        padding-bottom: 9.6rem;
+      }
+
+      .scene-heading { font-size: clamp(2.65rem, 12vw, 4rem); }
+      .scene-copy { max-width: 34ch; }
+      .top-hud, .bottom-hud { padding: 1.1rem; }
+      .brand-lockup { padding: .62rem .72rem; }
+      .brand-label { font-size: 1.3rem; }
+      .sequence-panel { min-width: 100px; padding-right: 0; }
+      .bottom-hud { align-items: flex-end; }
+      .control-group { gap: .38rem; }
+      .control-button { min-width: 40px; min-height: 40px; }
+      .play-button { min-width: 44px; padding: 0; }
+      .play-text { display: none; }
+      .timeline-panel { width: 37vw; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+    /* Readability and presentation upgrade */
+    body { font-size: 18px; }
+    .scene-content {
+      width: min(820px, 90vw);
+      margin-left: clamp(1.6rem, 9vw, 11rem);
+      padding: clamp(1.4rem, 3vw, 2.6rem);
+      border-left: 3px solid rgba(255,195,91,.82);
+      background: linear-gradient(90deg, rgba(7,3,10,.52), rgba(7,3,10,.08));
+      backdrop-filter: blur(2px);
+    }
+    .scene-index { font-size: clamp(.9rem, 1.35vw, 1.15rem) !important; letter-spacing: .18em; }
+    .scene-heading { max-width: 14ch; font-size: clamp(3.25rem, 7vw, 7rem) !important; line-height: 1.02; }
+    .scene-copy { max-width: 52ch; margin-top: 1.45rem; font-size: clamp(1.12rem, 1.65vw, 1.45rem) !important; line-height: 1.8 !important; }
+    .brand-lockup { padding: 1rem 1.25rem; border-radius: 4px; box-shadow: 0 12px 32px rgba(0,0,0,.32); }
+    .brand-label { font-size: clamp(1.9rem, 3vw, 2.65rem) !important; }
+    .brand-subtitle, .sequence-label, .timeline-meta { font-size: clamp(.72rem, 1.05vw, .95rem) !important; line-height: 1.45; }
+    .sequence-value { font-size: clamp(1rem, 1.5vw, 1.3rem); }
+    .sequence-panel { min-width: 170px; padding: 1rem 1.1rem; border-radius: 0 4px 4px 0; }
+    .control-button { min-width: 52px; min-height: 52px; font-size: 1.05rem; }
+    .play-button { min-width: 142px; font-size: 1rem; }
+    .timeline-panel { width: min(48vw, 470px); padding: .85rem 1rem; border: 1px solid rgba(255,213,157,.2); background: rgba(7,3,10,.38); backdrop-filter: blur(10px); }
+    .timeline-step { height: 5px; }
+    .end-mark { font-size: .92rem !important; padding: .9rem 1.25rem; }
+    @media (max-width: 640px) {
+      body { font-size: 17px; }
+      .scene-content { width: calc(100% - 2rem); margin: 4.8rem 1rem 0; padding: 1.2rem; }
+      .scene-heading { font-size: clamp(2.8rem, 12vw, 4.4rem) !important; }
+      .scene-copy { font-size: 1.03rem !important; line-height: 1.7 !important; }
+      .brand-label { font-size: 1.55rem !important; }
+      .sequence-panel { min-width: 122px; padding: .7rem; }
+      .control-button { min-width: 46px; min-height: 46px; }
+      .timeline-panel { width: 48vw; padding: .6rem; }
+    }
+  </style>
+  <script src="/_sdk/935a53bc2e11fb8d.data_sdk.js" type="text/javascript" integrity="sha512-qr2oyPnEys1WebcOABaRh6hG77r5PWpqeWW6JTKbRJqly/INsfBi31CVNlTmHqjgeLpkVmmHZJUdxSx/32tOFQ=="></script>
+  <script src="/_sdk/6030e540d4419216.resizing_sdk.js" type="text/javascript" integrity="sha512-b5KWzyoXsbWP4smq4sftIi6Kts4YVBpBsz0BwCViwbBJkK64a3/Z6ZMdWA+qnplNcXw4mhZeqvQi3mOosiRJdA=="></script>
+ </head>
+ <body data-template-id="__page-root" style="background: radial-gradient(rgb(62, 17, 16), rgb(6, 4, 11), rgb(2, 1, 4));">
+  <main class="reel-shell" id="reel-shell" aria-label="MarsBurger 九幕電影短片">
+   <div class="stars" aria-hidden="true"></div>
+   <section class="scene-stage" aria-live="polite">
+    <article class="reel-scene active scene-one" data-scene="0">
+     <img data-template-id="scene-1-image" class="scene-image canva-image" loading="lazy" src="../images/burger-1.jpg" alt="Dynamic scene of colorful gas clouds and stars in a cosmic nebula.">
+     <div class="scene-tint"></div>
+     <div class="scene-content">
+      <p data-template-id="scene-1-kicker" class="scene-index canva-text" style="color: rgb(255, 195, 91); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">01 · DEEP SPACE</p>
+      <h1 data-template-id="scene-1-heading" class="scene-heading canva-text" style="color: rgb(255, 245, 231); font-weight: 700; font-style: normal; font-size: 32px;">紅色星球，正在甦醒。</h1>
+      <p data-template-id="scene-1-copy" class="scene-copy canva-text" style="color: rgb(248, 223, 197); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">穿過星塵與絢麗星雲，遙遠的日光輕撫火星表面。</p>
+     </div>
+    </article>
+    <article class="reel-scene scene-two" data-scene="1">
+     <img data-template-id="scene-2-image" class="scene-image canva-image" loading="lazy" src="../images/burger-34.jpg" alt="Gourmet cheeseburger with melted cheddar, fresh lettuce, tomato, and herbs on a dark surface.">
+     <div class="scene-tint"></div>
+     <div class="scene-content">
+      <p data-template-id="scene-2-kicker" class="scene-index canva-text" style="color: rgb(255, 195, 91); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">02 · FIRST CONTACT</p>
+      <h2 data-template-id="scene-2-heading" class="scene-heading canva-text" style="color: rgb(255, 245, 231); font-weight: 700; font-style: normal; font-size: 24px;">第一口，登陸新宇宙。</h2>
+      <p data-template-id="scene-2-copy" class="scene-copy canva-text" style="color: rgb(248, 223, 197); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">熾熱肉排、融化起司與鬆軟麵包，在黑暗中發出自己的光。</p>
+     </div>
+    </article>
+    <article class="reel-scene scene-three" data-scene="2">
+     <img data-template-id="scene-3-image" class="scene-image canva-image" loading="lazy" src="../images/burger-35.jpg" alt="Gourmet double burger with thick patties, melted cheese, fresh vegetables, and toasted bun.">
+     <div class="scene-tint"></div>
+     <div class="scene-content">
+      <p data-template-id="scene-3-kicker" class="scene-index canva-text" style="color: rgb(255, 195, 91); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">03 · FRESH ORBIT</p>
+      <h2 data-template-id="scene-3-heading" class="scene-heading canva-text" style="color: rgb(255, 245, 231); font-weight: 700; font-style: normal; font-size: 24px;">每一層，都有引力。</h2>
+      <p data-template-id="scene-3-copy" class="scene-copy canva-text" style="color: rgb(248, 223, 197); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">脆生蔬菜、新鮮番茄與醬汁，在零重力般的節奏裡精準降落。</p>
+     </div>
+    </article>
+    <article class="reel-scene scene-four" data-scene="3">
+     <img data-template-id="scene-4-image" class="scene-image canva-image" loading="lazy" src="../images/burger-7.jpg" alt="Tall gourmet cheeseburger with crispy exterior, caramelized toppings, and multiple layers.">
+     <div class="scene-tint"></div>
+     <div class="scene-content">
+      <p data-template-id="scene-4-kicker" class="scene-index canva-text" style="color: rgb(255, 195, 91); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">04 · FULL SIGNAL</p>
+      <h2 data-template-id="scene-4-heading" class="scene-heading canva-text" style="color: rgb(255, 245, 231); font-weight: 700; font-style: normal; font-size: 24px;">一餐到位，宇宙級滿足。</h2>
+      <p data-template-id="scene-4-copy" class="scene-copy canva-text" style="color: rgb(248, 223, 197); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">漢堡、金黃薯條與冰涼飲品，組成今晚最值得分享的星際套餐。</p>
+     </div>
+    </article>
+    <article class="reel-scene scene-five" data-scene="4">
+     <img data-template-id="scene-5-image" class="scene-image canva-image" loading="lazy" src="../images/burger-10.jpg" alt="Artistic burger shot on wooden board with multiple layers, cheese, fresh greens, and sauce.">
+     <div class="scene-tint"></div>
+     <div class="scene-content">
+      <p data-template-id="scene-5-kicker" class="scene-index canva-text" style="color: rgb(255, 195, 91); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">05 · ORDER UPLINK</p>
+      <h2 data-template-id="scene-5-heading" class="scene-heading canva-text" style="color: rgb(255, 245, 231); font-weight: 700; font-style: normal; font-size: 24px;">你的渴望，立即上線。</h2>
+      <p data-template-id="scene-5-copy" class="scene-copy canva-text" style="color: rgb(248, 223, 197); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">輕點幾下，來自火星中央廚房的訊號便朝你出發。</p>
+     </div>
+    </article>
+    <article class="reel-scene scene-six" data-scene="5">
+     <img data-template-id="scene-6-image" class="scene-image canva-image" loading="lazy" src="../images/burger-11.jpg" alt="Hands holding delicious gourmet burger with fresh lettuce and melted cheese against dark background.">
+     <div class="scene-tint"></div>
+     <div class="scene-content">
+      <p data-template-id="scene-6-kicker" class="scene-index canva-text" style="color: rgb(255, 195, 91); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">06 · MISSION CONTROL</p>
+      <h2 data-template-id="scene-6-heading" class="scene-heading canva-text" style="color: rgb(255, 245, 231); font-weight: 700; font-style: normal; font-size: 24px;">每份美味，精準發射。</h2>
+      <p data-template-id="scene-6-copy" class="scene-copy canva-text" style="color: rgb(248, 223, 197); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">速度、溫度與時間，全部校準至最接近完美的座標。</p>
+     </div>
+    </article>
+    <article class="reel-scene scene-seven" data-scene="6">
+     <img data-template-id="scene-7-image" class="scene-image canva-image" loading="lazy" src="../images/burger-12.jpg" alt="Two chefs working together in a commercial kitchen, preparing food.">
+     <div class="scene-tint"></div>
+     <div class="scene-content">
+      <p data-template-id="scene-7-kicker" class="scene-index canva-text" style="color: rgb(255, 195, 91); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">07 · KITCHEN CREW</p>
+      <h2 data-template-id="scene-7-heading" class="scene-heading canva-text" style="color: rgb(255, 245, 231); font-weight: 700; font-style: normal; font-size: 24px;">在高溫之中，創造傳奇。</h2>
+      <p data-template-id="scene-7-copy" class="scene-copy canva-text" style="color: rgb(248, 223, 197); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">一雙雙專注的手，讓每一次滋滋作響都成為值得期待的瞬間。</p>
+     </div>
+    </article>
+    <article class="reel-scene scene-eight" data-scene="7">
+     <img data-template-id="scene-8-image" class="scene-image canva-image" loading="lazy" src="../images/burger-13.jpg" alt="Young couple enjoying a casual dinner date in a cozy indoor restaurant setting.">
+     <div class="scene-tint"></div>
+     <div class="scene-content">
+      <p data-template-id="scene-8-kicker" class="scene-index canva-text" style="color: rgb(255, 195, 91); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">08 · SHARE THE LIGHT</p>
+      <h2 data-template-id="scene-8-heading" class="scene-heading canva-text" style="color: rgb(255, 245, 231); font-weight: 700; font-style: normal; font-size: 24px;">把今晚，留在同一張桌上。</h2>
+      <p data-template-id="scene-8-copy" class="scene-copy canva-text" style="color: rgb(248, 223, 197); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">最好的旅程不只抵達目的地，也讓身邊的人一起笑著停留。</p>
+     </div>
+    </article>
+    <article class="reel-scene scene-nine" data-scene="8">
+     <img data-template-id="scene-9-image" class="scene-image canva-image" loading="lazy" src="../images/burger-14.jpg" alt="A breathtaking view of a dramatic red sunset with silhouetted clouds creating a moody atmosphere.">
+     <div class="scene-tint"></div>
+     <div class="scene-content">
+      <p data-template-id="scene-9-kicker" class="scene-index canva-text" style="color: rgb(255, 195, 91); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.14rem;">09 · MARS CENTRAL</p>
+      <h2 data-template-id="scene-9-heading" class="scene-heading canva-text" style="color: rgb(255, 245, 231); font-weight: 800; font-style: normal; font-size: 24px;">下一站，MarsBurger。</h2>
+      <p data-template-id="scene-9-copy" class="scene-copy canva-text" style="color: rgb(248, 223, 197); font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.6;">當火星的夕陽落下，我們依然為你保留一席最熱的美味。</p>
+      <p data-template-id="scene-9-mark" class="end-mark canva-tag" style="background: rgba(48, 5, 7, 0.54); color: rgb(255, 195, 91); font-weight: 700; font-style: normal; font-size: 11px; letter-spacing: 0.12rem;">MARSBURGER · NOW SERVING</p>
+     </div>
+    </article>
+   </section>
+   <header class="top-hud">
+    <aside data-template-id="brand-lockup" class="brand-lockup canva-panel" aria-label="MarsBurger" style="background: rgba(7, 3, 10, 0.48);">
+     <p data-template-id="brand-name" class="brand-label canva-text" style="color: rgb(255, 195, 91); font-weight: 800; font-style: normal; font-size: 26px;">MarsBurger</p>
+     <p data-template-id="brand-subtitle" class="brand-subtitle canva-text" style="color: rgb(255, 229, 191); font-weight: 700; font-style: normal; font-size: 9px; letter-spacing: 0.1rem;">PREMIUM FAST FOOD · MARS CENTRAL</p>
+    </aside>
+    <aside data-template-id="sequence-panel" class="sequence-panel canva-panel" style="background: linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(10, 3, 10, 0.52));">
+     <p data-template-id="sequence-label" class="sequence-label canva-text" style="color: rgb(255, 204, 139); font-weight: 700; font-style: normal; font-size: 9px; letter-spacing: 0.12rem;">CINEMATIC REEL</p>
+     <p id="sequence-value" class="sequence-value" aria-live="off">01 / 09</p>
+    </aside>
+   </header>
+   <footer class="bottom-hud">
+    <nav class="control-group" aria-label="電影播放控制">
+     <button id="previous-button" data-template-id="previous-button" class="control-button canva-button" type="button" aria-label="上一幕" style="background: rgba(9, 5, 12, 0.58); color: rgb(255, 243, 223);"> <i data-lucide="skip-back" width="17" height="17" aria-hidden="true"></i> </button> <button id="play-button" data-template-id="play-button" class="control-button play-button canva-button" type="button" style="background: linear-gradient(135deg, rgb(229, 58, 30), rgb(143, 13, 17)); color: rgb(255, 248, 237); font-weight: 700;"> <i id="play-icon" data-lucide="play" width="17" height="17" aria-hidden="true"></i> <span data-template-id="play-label" class="play-text canva-text" style="color: rgb(255, 248, 237); font-weight: 700; font-style: normal; font-size: 14px;">播放</span> </button> <button id="pause-button" data-template-id="pause-button" class="control-button canva-button" type="button" aria-pressed="false" aria-label="暫停或繼續" style="background: rgba(9, 5, 12, 0.58); color: rgb(255, 243, 223);"> <i class="pause-icon" data-lucide="pause" width="17" height="17" aria-hidden="true"></i> <i class="resume-icon" data-lucide="play" width="17" height="17" aria-hidden="true"></i> </button> <button id="next-button" data-template-id="next-button" class="control-button canva-button" type="button" aria-label="下一幕" style="background: rgba(9, 5, 12, 0.58); color: rgb(255, 243, 223);"> <i data-lucide="skip-forward" width="17" height="17" aria-hidden="true"></i> </button>
+    </nav>
+    <section class="timeline-panel" aria-label="場景進度">
+     <div class="timeline-bar" role="tablist" aria-label="選擇場景">
+      <button class="timeline-step current" type="button" data-target-scene="0" aria-label="前往第 1 幕"></button> <button class="timeline-step" type="button" data-target-scene="1" aria-label="前往第 2 幕"></button> <button class="timeline-step" type="button" data-target-scene="2" aria-label="前往第 3 幕"></button> <button class="timeline-step" type="button" data-target-scene="3" aria-label="前往第 4 幕"></button> <button class="timeline-step" type="button" data-target-scene="4" aria-label="前往第 5 幕"></button> <button class="timeline-step" type="button" data-target-scene="5" aria-label="前往第 6 幕"></button> <button class="timeline-step" type="button" data-target-scene="6" aria-label="前往第 7 幕"></button> <button class="timeline-step" type="button" data-target-scene="7" aria-label="前往第 8 幕"></button> <button class="timeline-step" type="button" data-target-scene="8" aria-label="前往第 9 幕"></button>
+     </div>
+     <div class="timeline-meta">
+      <span id="scene-clock">00:00</span> <span id="reel-clock">09 SCENES</span>
+     </div>
+    </section>
+   </footer>
+  </main>
+  <script src="/_sdk/0a2c59aba90bafcf.editing_sdk.js" integrity="sha512-oJ0eVi6NgEzXGPCIPXJiGxB6ZRyIzQ1VF+WywtAc5NXBkRu8KT/0qsMQvecuVbkhSpdfToUqXoPwRVBZaa+Xxw=="></script>
+  <script>
+    const reelShell = document.getElementById("reel-shell");
+    const scenes = Array.from(document.querySelectorAll(".reel-scene"));
+    const steps = Array.from(document.querySelectorAll(".timeline-step"));
+    const sequenceValue = document.getElementById("sequence-value");
+    const sceneClock = document.getElementById("scene-clock");
+    const playButton = document.getElementById("play-button");
+    const pauseButton = document.getElementById("pause-button");
+    const previousButton = document.getElementById("previous-button");
+    const nextButton = document.getElementById("next-button");
+
+    const sceneDuration = 6000;
+    let currentScene = 0;
+    let isPlaying = false;
+    let timerId = null;
+
+    function updateHud() {
+      sequenceValue.textContent = String(currentScene + 1).padStart(2, "0") + " / 09";
+      sceneClock.textContent = "00:" + String(currentScene * 6).padStart(2, "0");
+
+      steps.forEach((step, index) => {
+        step.classList.toggle("current", index === currentScene);
+        step.classList.toggle("visited", index < currentScene);
+        step.setAttribute("aria-selected", String(index === currentScene));
+      });
+
+      previousButton.disabled = currentScene === 0;
+      nextButton.disabled = currentScene === scenes.length - 1;
+      pauseButton.setAttribute("aria-pressed", String(!isPlaying));
+      reelShell.classList.toggle("is-paused", !isPlaying);
+    }
+
+    function showScene(index) {
+      currentScene = Math.max(0, Math.min(index, scenes.length - 1));
+      scenes.forEach((scene, sceneIndex) => {
+        scene.classList.toggle("active", sceneIndex === currentScene);
+      });
+      updateHud();
+    }
+
+    function stopTimer() {
+      if (timerId) {
+        window.clearTimeout(timerId);
+        timerId = null;
+      }
+    }
+
+    function scheduleNext() {
+      stopTimer();
+      if (!isPlaying) return;
+
+      timerId = window.setTimeout(() => {
+        if (currentScene >= scenes.length - 1) {
+          isPlaying = false;
+          updateHud();
+          return;
+        }
+        showScene(currentScene + 1);
+        scheduleNext();
+      }, sceneDuration);
+    }
+
+    function playFromCurrent() {
+      if (currentScene >= scenes.length - 1) {
+        showScene(0);
+      }
+      isPlaying = true;
+      updateHud();
+      scheduleNext();
+    }
+
+    function pauseReel() {
+      isPlaying = false;
+      stopTimer();
+      updateHud();
+    }
+
+    playButton.addEventListener("click", () => {
+      if (isPlaying) {
+        pauseReel();
+      } else {
+        playFromCurrent();
+      }
+    });
+
+    pauseButton.addEventListener("click", () => {
+      if (isPlaying) {
+        pauseReel();
+      } else {
+        playFromCurrent();
+      }
+    });
+
+    previousButton.addEventListener("click", () => {
+      showScene(currentScene - 1);
+      if (isPlaying) scheduleNext();
+    });
+
+    nextButton.addEventListener("click", () => {
+      showScene(currentScene + 1);
+      if (isPlaying) scheduleNext();
+    });
+
+    steps.forEach((step) => {
+      step.addEventListener("click", () => {
+        showScene(Number(step.dataset.targetScene));
+        if (isPlaying) scheduleNext();
+      });
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      updateHud();
+    });
+  </script>
+ 
+</body></html>
